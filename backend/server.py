@@ -65,6 +65,13 @@ class PropertyListing(BaseModel):
     year_built: Optional[int] = None
     url: Optional[str] = None
     
+    # New property features
+    has_garage: Optional[bool] = None
+    garage_spaces: Optional[int] = None
+    nearby_vacant_properties: Optional[int] = 0
+    nearby_damaged_properties: Optional[int] = 0
+    neighborhood_quality: Optional[str] = "good"  # excellent, good, fair, poor
+    
     # Analysis fields
     monthly_rent: Optional[float] = None
     property_tax: Optional[float] = None
