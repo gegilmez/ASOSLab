@@ -394,6 +394,9 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
             "neighborhood_quality": "good",
             "home_style": "ranch",
             "days_on_market": 15,
+            "in_reca_zone": True,
+            "proximity_to_coldwater_creek": "near",
+            "proximity_to_westlake_landfill": "moderate",
             "url": "https://www.zillow.com/homedetails/130-Ruth-Dr-St-Louis-City-MO-63031/2076622826_zpid/"
         },
         {
