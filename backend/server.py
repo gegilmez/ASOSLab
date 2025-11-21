@@ -315,7 +315,7 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
         {
             "zpid": "2076622826",
             "address": "130 Ruth Dr",
-            "city": "Florissant",
+            "city": "St. Louis City",
             "state": "MO",
             "zipcode": "63031",
             "price": 155000,
@@ -330,27 +330,27 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
             "nearby_damaged_properties": 0,
             "neighborhood_quality": "good",
             "home_style": "ranch",
-            "url": "https://www.zillow.com/homedetails/130-Ruth-Dr-Florissant-MO-63031/2076622826_zpid/"
+            "url": "https://www.zillow.com/homedetails/130-Ruth-Dr-St-Louis-City-MO-63031/2076622826_zpid/"
         },
         {
             "zpid": "2987123456",
             "address": "456 Oak Street",
-            "city": "Maryland Heights",
+            "city": "Clayton",
             "state": "MO",
             "zipcode": "63043",
-            "price": 135000,
-            "bedrooms": 2,
-            "bathrooms": 1.5,
-            "livingArea": 1100,
+            "price": 235000,
+            "bedrooms": 3,
+            "bathrooms": 2.5,
+            "livingArea": 1800,
             "homeType": "SINGLE_FAMILY",
             "propertyType": "single_family",
             "has_garage": True,
-            "garage_spaces": 1,
+            "garage_spaces": 2,
             "nearby_vacant_properties": 0,
             "nearby_damaged_properties": 0,
             "neighborhood_quality": "excellent",
-            "home_style": "bungalow",
-            "url": "https://www.zillow.com/homedetails/456-Oak-Street-Maryland-Heights-MO-63043/2987123456_zpid/"
+            "home_style": "colonial",
+            "url": "https://www.zillow.com/homedetails/456-Oak-Street-Clayton-MO-63043/2987123456_zpid/"
         },
         {
             "zpid": "3456789012",
