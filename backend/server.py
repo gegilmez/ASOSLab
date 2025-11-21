@@ -598,6 +598,12 @@ async def search_properties(filters: SearchFilters):
                 if property_data.get('nearby_vacant_properties', 0) > 0:
                     continue
                 
+                # Apply days on market filter
+                if filters.min_days_on_market > 0:
+                    days_on_market = property_data.get('days_on_market', 0)
+                    if days_on_market < filters.min_days_on_market:
+                        continue
+                
                 # Estimate missing values
                 property_data = await estimate_property_values(property_data)
                 
