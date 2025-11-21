@@ -839,7 +839,7 @@ async def send_weekly_email():
                 
                 # Send email
                 message = MIMEMultipart('alternative')
-                message['Subject'] = f"Weekly St. Louis Property Report - {len(properties)} Properties Found"
+                message['Subject'] = f"{frequency_label} St. Louis Property Report - {len(properties)} Properties Found"
                 message['From'] = os.environ.get('GMAIL_ADDRESS')
                 message['To'] = prefs.email
                 
