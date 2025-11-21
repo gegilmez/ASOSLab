@@ -16,6 +16,7 @@ from apscheduler.triggers.cron import CronTrigger
 import aiosmtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from city_updater import get_cached_cities, fetch_cities_from_sheet
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
