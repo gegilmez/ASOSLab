@@ -1,52 +1,475 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from "axios";
+import { Search, Home, Mail, TrendingUp, DollarSign, Bed, MapPin, ExternalLink, Settings } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-const Home = () => {
-  const helloWorldApi = async () => {
+function App() {
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("search");
+  
+  // Search filters
+  const [selectedCities, setSelectedCities] = useState(["Florissant", "St. Ann", "Maryland Heights"]);
+  const [minPrice, setMinPrice] = useState(100000);
+  const [maxPrice, setMaxPrice] = useState(250000);
+  const [minBedrooms, setMinBedrooms] = useState(2);
+  const [maxBedrooms, setMaxBedrooms] = useState(3);
+  const [propertyType, setPropertyType] = useState("single_family");
+  const [minCapRate, setMinCapRate] = useState(5);
+  
+  // Email preferences
+  const [email, setEmail] = useState("");
+  const [emailMinCapRate, setEmailMinCapRate] = useState(6);
+  const [emailMinROI, setEmailMinROI] = useState(8);
+  const [dayOfWeek, setDayOfWeek] = useState("monday");
+  const [emailEnabled, setEmailEnabled] = useState(true);
+  
+  const cities = ["Florissant", "St. Ann", "Maryland Heights", "University City", "Lemay", "Afton"];
+  
+  useEffect(() => {
+    loadSavedProperties();
+  }, []);
+  
+  const loadSavedProperties = async () => {
     try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
+      const response = await axios.get(`${API}/properties?limit=20`);
+      setProperties(response.data);
+    } catch (error) {
+      console.error("Error loading properties:", error);
     }
   };
-
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
-
-function App() {
+  
+  const searchProperties = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.post(`${API}/properties/search`, {
+        cities: selectedCities,
+        min_price: minPrice,
+        max_price: maxPrice,
+        min_bedrooms: minBedrooms,
+        max_bedrooms: maxBedrooms,
+        property_types: propertyType === "both" ? ["single_family", "multi_family"] : [propertyType],
+        min_cap_rate: minCapRate / 100,
+        limit: 50
+      });
+      
+      setProperties(response.data);
+      toast.success(`Found ${response.data.length} properties!`);
+    } catch (error) {
+      console.error("Error searching properties:", error);
+      toast.error("Error searching properties. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const saveEmailPreferences = async () => {
+    if (!email) {
+      toast.error("Please enter your email address");
+      return;
+    }
+    
+    try {
+      await axios.post(`${API}/email-preferences`, {
+        email,
+        min_cap_rate: emailMinCapRate / 100,
+        min_roi: emailMinROI / 100,
+        day_of_week: dayOfWeek,
+        enabled: emailEnabled
+      });
+      
+      toast.success("Email preferences saved! You'll receive weekly property updates.");
+    } catch (error) {
+      console.error("Error saving preferences:", error);
+      toast.error("Error saving preferences. Please try again.");
+    }
+  };
+  
+  const sendTestEmail = async () => {
+    if (!email) {
+      toast.error("Please enter your email address");
+      return;
+    }
+    
+    try {
+      await axios.post(`${API}/test-email?email=${email}`);
+      toast.success("Test email sent! Check your inbox.");
+    } catch (error) {
+      console.error("Error sending test email:", error);
+      toast.error("Error sending test email. Please try again.");
+    }
+  };
+  
+  const toggleCity = (city) => {
+    setSelectedCities(prev => 
+      prev.includes(city) ? prev.filter(c => c !== city) : [...prev, city]
+    );
+  };
+  
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+        {/* Header */}
+        <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-2 rounded-lg">
+                  <Home className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold text-slate-900" style={{fontFamily: 'Space Grotesk, sans-serif'}}>STL Property Analyzer</h1>
+                  <p className="text-sm text-slate-600">Find Your Next Investment Property</p>
+                </div>
+              </div>
+              <Badge variant="secondary" className="hidden sm:flex items-center gap-1">
+                <TrendingUp className="h-3 w-3" />
+                Cap Rate Analysis
+              </Badge>
+            </div>
+          </div>
+        </header>
+        
+        {/* Main Content */}
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+            <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 bg-white/60 backdrop-blur-sm" data-testid="main-tabs">
+              <TabsTrigger value="search" className="gap-2" data-testid="search-tab">
+                <Search className="h-4 w-4" />
+                Search
+              </TabsTrigger>
+              <TabsTrigger value="properties" className="gap-2" data-testid="properties-tab">
+                <Home className="h-4 w-4" />
+                Properties
+              </TabsTrigger>
+              <TabsTrigger value="email" className="gap-2" data-testid="email-tab">
+                <Mail className="h-4 w-4" />
+                Email Setup
+              </TabsTrigger>
+            </TabsList>
+            
+            {/* Search Tab */}
+            <TabsContent value="search" className="space-y-6" data-testid="search-content">
+              <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Search className="h-5 w-5 text-blue-600" />
+                    Search Investment Properties
+                  </CardTitle>
+                  <CardDescription>
+                    Find properties in St. Louis that meet your investment criteria
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Cities Selection */}
+                  <div className="space-y-3">
+                    <Label className="text-base font-semibold">Select Cities</Label>
+                    <div className="flex flex-wrap gap-2">
+                      {cities.map(city => (
+                        <Badge
+                          key={city}
+                          variant={selectedCities.includes(city) ? "default" : "outline"}
+                          className="cursor-pointer px-4 py-2 text-sm hover:scale-105 transition-transform"
+                          onClick={() => toggleCity(city)}
+                          data-testid={`city-${city.toLowerCase().replace(' ', '-')}`}
+                        >
+                          <MapPin className="h-3 w-3 mr-1" />
+                          {city}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Price Range */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="min-price">Min Price</Label>
+                      <div className="relative">
+                        <DollarSign className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                        <Input
+                          id="min-price"
+                          type="number"
+                          value={minPrice}
+                          onChange={(e) => setMinPrice(Number(e.target.value))}
+                          className="pl-10"
+                          data-testid="min-price-input"
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="max-price">Max Price</Label>
+                      <div className="relative">
+                        <DollarSign className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                        <Input
+                          id="max-price"
+                          type="number"
+                          value={maxPrice}
+                          onChange={(e) => setMaxPrice(Number(e.target.value))}
+                          className="pl-10"
+                          data-testid="max-price-input"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Bedrooms */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="min-beds">Min Bedrooms</Label>
+                      <div className="relative">
+                        <Bed className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                        <Input
+                          id="min-beds"
+                          type="number"
+                          value={minBedrooms}
+                          onChange={(e) => setMinBedrooms(Number(e.target.value))}
+                          className="pl-10"
+                          data-testid="min-bedrooms-input"
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="max-beds">Max Bedrooms</Label>
+                      <div className="relative">
+                        <Bed className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                        <Input
+                          id="max-beds"
+                          type="number"
+                          value={maxBedrooms}
+                          onChange={(e) => setMaxBedrooms(Number(e.target.value))}
+                          className="pl-10"
+                          data-testid="max-bedrooms-input"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Property Type */}
+                  <div className="space-y-2">
+                    <Label htmlFor="property-type">Property Type</Label>
+                    <Select value={propertyType} onValueChange={setPropertyType}>
+                      <SelectTrigger id="property-type" data-testid="property-type-select">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="single_family">Single Family</SelectItem>
+                        <SelectItem value="multi_family">Multi Family</SelectItem>
+                        <SelectItem value="both">Both</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  {/* Min Cap Rate */}
+                  <div className="space-y-2">
+                    <Label htmlFor="cap-rate">Minimum Cap Rate (%)</Label>
+                    <Input
+                      id="cap-rate"
+                      type="number"
+                      step="0.5"
+                      value={minCapRate}
+                      onChange={(e) => setMinCapRate(Number(e.target.value))}
+                      data-testid="min-cap-rate-input"
+                    />
+                  </div>
+                  
+                  <Button 
+                    onClick={searchProperties} 
+                    disabled={loading} 
+                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-6 text-lg"
+                    data-testid="search-button"
+                  >
+                    {loading ? "Searching..." : "Search Properties"}
+                  </Button>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            
+            {/* Properties Tab */}
+            <TabsContent value="properties" className="space-y-4" data-testid="properties-content">
+              {properties.length === 0 ? (
+                <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
+                  <CardContent className="py-12 text-center">
+                    <Home className="h-16 w-16 mx-auto text-slate-300 mb-4" />
+                    <h3 className="text-lg font-semibold text-slate-900 mb-2">No Properties Found</h3>
+                    <p className="text-slate-600 mb-4">Start searching to find investment opportunities</p>
+                    <Button onClick={() => setActiveTab("search")} data-testid="start-searching-button">
+                      Start Searching
+                    </Button>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {properties.map((property, index) => (
+                    <Card key={property.zpid} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm overflow-hidden group" data-testid={`property-card-${index}`}>
+                      <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 pb-4">
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1">
+                            <CardTitle className="text-xl mb-1" style={{fontFamily: 'Space Grotesk, sans-serif'}}>
+                              {property.address}
+                            </CardTitle>
+                            <CardDescription className="flex items-center gap-1">
+                              <MapPin className="h-3 w-3" />
+                              {property.city}, {property.state} {property.zip_code}
+                            </CardDescription>
+                          </div>
+                          <Badge className="bg-green-100 text-green-800 border-green-200" data-testid={`cap-rate-${index}`}>
+                            {property.cap_rate?.toFixed(1)}% Cap
+                          </Badge>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="pt-6 space-y-4">
+                        {/* Price and Details */}
+                        <div className="flex items-center justify-between pb-4 border-b border-slate-200">
+                          <div>
+                            <p className="text-3xl font-bold text-slate-900" style={{fontFamily: 'Space Grotesk, sans-serif'}}>
+                              ${property.price?.toLocaleString()}
+                            </p>
+                            <p className="text-sm text-slate-600 mt-1">
+                              {property.bedrooms || 'N/A'} bed • {property.bathrooms || 'N/A'} bath • {property.sqft?.toLocaleString() || 'N/A'} sqft
+                            </p>
+                          </div>
+                        </div>
+                        
+                        {/* Investment Metrics */}
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="bg-blue-50 rounded-lg p-3">
+                            <p className="text-xs text-slate-600 mb-1">Cap Rate</p>
+                            <p className="text-xl font-bold text-blue-700">{property.cap_rate?.toFixed(2)}%</p>
+                          </div>
+                          <div className="bg-emerald-50 rounded-lg p-3">
+                            <p className="text-xs text-slate-600 mb-1">ROI</p>
+                            <p className="text-xl font-bold text-emerald-700">{property.roi?.toFixed(2)}%</p>
+                          </div>
+                          <div className="bg-purple-50 rounded-lg p-3">
+                            <p className="text-xs text-slate-600 mb-1">Cash Flow</p>
+                            <p className="text-lg font-bold text-purple-700">${property.annual_cash_flow?.toLocaleString()}/yr</p>
+                          </div>
+                          <div className="bg-amber-50 rounded-lg p-3">
+                            <p className="text-xs text-slate-600 mb-1">Est. Rent</p>
+                            <p className="text-lg font-bold text-amber-700">${property.monthly_rent?.toLocaleString()}/mo</p>
+                          </div>
+                        </div>
+                        
+                        {/* Additional Info */}
+                        <div className="text-sm text-slate-600 space-y-1 pt-2">
+                          <p>Property Tax: ${property.property_tax?.toLocaleString()}/year</p>
+                          <p>Insurance: ${property.insurance?.toLocaleString()}/year</p>
+                          <p>NOI: ${property.noi?.toLocaleString()}/year</p>
+                        </div>
+                      </CardContent>
+                      <CardFooter className="bg-slate-50">
+                        {property.url && (
+                          <Button 
+                            variant="outline" 
+                            className="w-full group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-colors"
+                            onClick={() => window.open(property.url, '_blank')}
+                            data-testid={`view-zillow-${index}`}
+                          >
+                            View on Zillow
+                            <ExternalLink className="ml-2 h-4 w-4" />
+                          </Button>
+                        )}
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+            
+            {/* Email Setup Tab */}
+            <TabsContent value="email" className="space-y-6" data-testid="email-content">
+              <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Mail className="h-5 w-5 text-blue-600" />
+                    Weekly Email Notifications
+                  </CardTitle>
+                  <CardDescription>
+                    Get properties matching your criteria delivered to your inbox weekly
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email Address</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="your.email@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      data-testid="email-input"
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="email-cap-rate">Minimum Cap Rate (%)</Label>
+                      <Input
+                        id="email-cap-rate"
+                        type="number"
+                        step="0.5"
+                        value={emailMinCapRate}
+                        onChange={(e) => setEmailMinCapRate(Number(e.target.value))}
+                        data-testid="email-cap-rate-input"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email-roi">Minimum ROI (%)</Label>
+                      <Input
+                        id="email-roi"
+                        type="number"
+                        step="0.5"
+                        value={emailMinROI}
+                        onChange={(e) => setEmailMinROI(Number(e.target.value))}
+                        data-testid="email-roi-input"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-4">
+                    <Button 
+                      onClick={saveEmailPreferences} 
+                      className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                      data-testid="save-preferences-button"
+                    >
+                      <Settings className="mr-2 h-4 w-4" />
+                      Save Preferences
+                    </Button>
+                    <Button 
+                      onClick={sendTestEmail} 
+                      variant="outline"
+                      data-testid="send-test-email-button"
+                    >
+                      Send Test Email
+                    </Button>
+                  </div>
+                  
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
+                    <h4 className="font-semibold text-blue-900 mb-2">How it works</h4>
+                    <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
+                      <li>Weekly emails sent every Monday at 9 AM</li>
+                      <li>Only properties matching your criteria are included</li>
+                      <li>Direct links to view properties on Zillow</li>
+                      <li>Detailed investment metrics for each property</li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </main>
+      </div>
     </div>
   );
 }
