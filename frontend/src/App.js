@@ -351,11 +351,11 @@ function App() {
                   <div className="space-y-4 pt-4 border-t border-slate-200">
                     <Label className="text-base font-semibold">Property Requirements</Label>
                     
-                    <div className="flex items-center justify-between bg-blue-50 p-4 rounded-lg">
+                    <div className="flex items-center justify-between bg-blue-50 p-4 rounded-lg hover:bg-blue-100 transition-colors">
                       <div className="flex items-center gap-3">
                         <div className="bg-blue-600 p-2 rounded">
                           <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                           </svg>
                         </div>
                         <div>
@@ -375,7 +375,7 @@ function App() {
                       </label>
                     </div>
                     
-                    <div className="flex items-center justify-between bg-amber-50 p-4 rounded-lg">
+                    <div className="flex items-center justify-between bg-amber-50 p-4 rounded-lg hover:bg-amber-100 transition-colors">
                       <div className="flex items-center gap-3">
                         <div className="bg-amber-600 p-2 rounded">
                           <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -399,9 +399,33 @@ function App() {
                       </label>
                     </div>
                     
+                    <div className="flex items-center justify-between bg-red-50 p-4 rounded-lg hover:bg-red-100 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <div className="bg-red-600 p-2 rounded">
+                          <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="font-medium text-slate-900">No Nearby Vacant Properties</p>
+                          <p className="text-sm text-slate-600">Exclude homes near vacant properties (>100 days)</p>
+                        </div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={excludeVacantNearby}
+                          onChange={(e) => setExcludeVacantNearby(e.target.checked)}
+                          className="sr-only peer"
+                          data-testid="exclude-vacant-toggle"
+                        />
+                        <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+                      </label>
+                    </div>
+                    
                     <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                       <p className="text-sm text-green-800">
-                        <strong>✓ Automatically filters:</strong> Properties with nearby vacant homes (>100 days) are excluded
+                        <strong>✓ Active Filters:</strong> {[requiresGarage && "Garage Required", excludeDamagedNearby && "No Damaged Nearby", excludeVacantNearby && "No Vacant Nearby"].filter(Boolean).join(", ") || "No filters active"}
                       </p>
                     </div>
                   </div>
