@@ -374,6 +374,7 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
             "nearby_damaged_properties": 0,
             "neighborhood_quality": "good",
             "home_style": "bungalow",
+            "days_on_market": 5,
             "url": "https://www.zillow.com/homedetails/789-Maple-Ave-The-Hill-MO-63130/3456789012_zpid/"
         },
         {
