@@ -98,27 +98,7 @@ function App() {
   
   useEffect(() => {
     loadSavedProperties();
-    loadCities();
   }, []);
-  
-  const loadCities = async () => {
-    try {
-      const response = await axios.get(`${API}/cities`);
-      const cityList = response.data.cities;
-      setCities(cityList);
-      
-      // Set default selected cities (first 3)
-      if (cityList.length > 0 && selectedCities.length === 0) {
-        setSelectedCities(cityList.slice(0, 3));
-      }
-    } catch (error) {
-      console.error("Error loading cities:", error);
-      // Fallback to default cities
-      const fallbackCities = ["St. Louis City", "University City", "Clayton"];
-      setCities(fallbackCities);
-      setSelectedCities(fallbackCities);
-    }
-  };
   
   const loadSavedProperties = async () => {
     try {
