@@ -83,12 +83,17 @@ class PropertyListing(BaseModel):
     nearby_vacant_properties: Optional[int] = 0
     nearby_damaged_properties: Optional[int] = 0
     neighborhood_quality: Optional[str] = "good"  # excellent, good, fair, poor
+    home_style: Optional[HomeStyle] = HomeStyle.OTHER
     
     # Analysis fields
     monthly_rent: Optional[float] = None
     property_tax: Optional[float] = None
-    insurance: Optional[float] = None
+    insurance: Optional[float] = 1000
     vacancy_rate: float = 0.04
+    deferred_maintenance: Optional[float] = 0
+    closing_cost_rate: float = 0.08
+    interest_rate: float = 0.07
+    down_payment_pct: float = 0.20
     
     # Calculated fields
     cap_rate: Optional[float] = None
