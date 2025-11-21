@@ -895,7 +895,7 @@ function App() {
                     />
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="email-cap-rate">Minimum Cap Rate (%)</Label>
                       <Input
@@ -918,6 +918,33 @@ function App() {
                         data-testid="email-roi-input"
                       />
                     </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email-irr">Minimum IRR (%)</Label>
+                      <Input
+                        id="email-irr"
+                        type="number"
+                        step="0.5"
+                        value={emailMinIRR}
+                        onChange={(e) => setEmailMinIRR(Number(e.target.value))}
+                        data-testid="email-irr-input"
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* Email Frequency */}
+                  <div className="space-y-2">
+                    <Label htmlFor="email-frequency">Email Alert Frequency</Label>
+                    <Select value={emailFrequency} onValueChange={setEmailFrequency}>
+                      <SelectTrigger id="email-frequency" data-testid="email-frequency-select">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="daily">Daily</SelectItem>
+                        <SelectItem value="weekly">Weekly (Monday)</SelectItem>
+                        <SelectItem value="biweekly">Bi-Weekly (Every 2 weeks)</SelectItem>
+                        <SelectItem value="monthly">Monthly (1st of month)</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                   
                   <div className="flex gap-4">
