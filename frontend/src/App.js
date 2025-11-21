@@ -592,20 +592,18 @@ function App() {
                             <Badge className="bg-green-100 text-green-800 border-green-200" data-testid={`cap-rate-${index}`}>
                               {property.cap_rate?.toFixed(1)}% Cap
                             </Badge>
-                            {property.url && (
-                              <a 
-                                href={property.url} 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors text-sm font-semibold shadow-sm"
-                                data-testid={`zillow-header-btn-${index}`}
-                              >
-                                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                                  <path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/>
-                                </svg>
-                                View on Zillow
-                              </a>
-                            )}
+                            <a 
+                              href={property.url || `https://www.zillow.com/homes/${property.address}-${property.city}-${property.state}-${property.zip_code}_rb/`} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors text-sm font-semibold shadow-sm"
+                              data-testid={`zillow-header-btn-${index}`}
+                            >
+                              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/>
+                              </svg>
+                              View on Zillow
+                            </a>
                           </div>
                         </div>
                       </CardHeader>
