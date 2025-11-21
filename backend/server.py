@@ -824,6 +824,7 @@ async def send_weekly_email():
                         <div><strong>Bedrooms:</strong> {prop.bedrooms or 'N/A'}</div>
                         <div><strong>Cap Rate:</strong> <span style="color: #059669; font-weight: bold;">{prop.cap_rate:.2f}%</span></div>
                         <div><strong>ROI:</strong> <span style="color: #059669; font-weight: bold;">{prop.roi:.2f}%</span></div>
+                        <div><strong>IRR:</strong> <span style="color: #6366f1; font-weight: bold;">{prop.irr:.2f}%</span></div>
                         <div><strong>Cash Flow:</strong> ${prop.annual_cash_flow:,.0f}/year</div>
                         <div><strong>Est. Rent:</strong> ${prop.monthly_rent:,.0f}/month</div>
                       </div>
