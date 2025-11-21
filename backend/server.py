@@ -146,6 +146,7 @@ class SearchFilters(BaseModel):
     requires_garage: bool = True
     max_nearby_vacant_days: int = 100
     exclude_damaged_nearby: bool = True
+    min_days_on_market: int = 0
     limit: int = Field(default=50, le=100)
 
 class EmailPreferences(BaseModel):
