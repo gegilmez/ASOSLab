@@ -192,14 +192,25 @@ function App() {
   };
   
   const updatePropertyRent = (zpid, newRent) => {
-    setProperties(prev => prev.map(prop => {
-      if (prop.zpid === zpid) {
-        return recalculateProperty(prop, parseFloat(newRent));
-      }
-      return prop;
-    }));
-    setEditingProperty(null);
-    toast.success("Property analysis updated!");
+    updatePropertyField(zpid, 'monthly_rent', newRent);
+  };
+  
+  const updatePropertyField = async (zpid, field, value) => {
+    try {
+      const updates = { [field]: parseFloat(value) };
+      const response = await axios.patch(`${API}/properties/${zpid}`, updates);
+      
+      setProperties(prev => prev.map(prop => 
+        prop.zpid === zpid ? response.data : prop
+      ));
+      
+      setEditingProperty(null);
+      setEditingField(null);
+      toast.success("Property updated & recalculated!");
+    } catch (error) {
+      console.error("Error updating property:", error);
+      toast.error("Failed to update property");
+    }
   };
   
   return (
