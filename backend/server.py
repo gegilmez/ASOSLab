@@ -91,7 +91,7 @@ class PropertyListing(BaseModel):
     property_tax: Optional[float] = None
     insurance: Optional[float] = 1000
     vacancy_rate: float = 0.04
-    deferred_maintenance: Optional[float] = 0
+    deferred_maintenance: Optional[float] = 5000
     closing_cost_rate: float = 0.08
     interest_rate: float = 0.07
     down_payment_pct: float = 0.20
