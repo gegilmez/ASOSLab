@@ -438,6 +438,18 @@ async def search_properties(filters: SearchFilters):
                     if property_data['bedrooms'] > filters.max_bedrooms:
                         continue
                 
+                # Apply garage filter
+                if filters.requires_garage and not property_data.get('has_garage'):
+                    continue
+                
+                # Apply neighborhood quality filters
+                if filters.exclude_damaged_nearby and property_data.get('nearby_damaged_properties', 0) > 0:
+                    continue
+                
+                # Filter out properties with long-vacant nearby homes
+                if property_data.get('nearby_vacant_properties', 0) > 0:
+                    continue
+                
                 # Estimate missing values
                 property_data = await estimate_property_values(property_data)
                 
