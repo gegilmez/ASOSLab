@@ -458,11 +458,17 @@ async def search_properties(filters: SearchFilters):
                     'property_type': PropertyType.SINGLE_FAMILY if 'SINGLE' in str(prop.get('homeType', '')).upper() else PropertyType.MULTI_FAMILY,
                     'property_condition': PropertyCondition.NEEDS_TLC,
                     'url': prop.get('url', ''),
-                    'has_garage': prop.get('has_garage', True),  # Assume yes if not specified
+                    'has_garage': prop.get('has_garage', True),
                     'garage_spaces': prop.get('garage_spaces', 1),
                     'nearby_vacant_properties': prop.get('nearby_vacant_properties', 0),
                     'nearby_damaged_properties': prop.get('nearby_damaged_properties', 0),
-                    'neighborhood_quality': prop.get('neighborhood_quality', 'good')
+                    'neighborhood_quality': prop.get('neighborhood_quality', 'good'),
+                    'home_style': prop.get('home_style', HomeStyle.OTHER),
+                    'insurance': prop.get('insurance', 1000),
+                    'deferred_maintenance': prop.get('deferred_maintenance', 0),
+                    'closing_cost_rate': prop.get('closing_cost_rate', 0.08),
+                    'interest_rate': prop.get('interest_rate', 0.07),
+                    'down_payment_pct': prop.get('down_payment_pct', 0.20)
                 }
                 
                 # Apply price filters
