@@ -437,6 +437,7 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
             "nearby_damaged_properties": 0,
             "neighborhood_quality": "good",
             "home_style": "split_level",
+            "days_on_market": 12,
             "url": "https://www.zillow.com/homedetails/888-Elm-Street-Affton-MO-63123/6789012345_zpid/"
         },
         {
@@ -457,6 +458,7 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
             "nearby_damaged_properties": 0,
             "neighborhood_quality": "fair",
             "home_style": "ranch",
+            "days_on_market": 45,
             "url": "https://www.zillow.com/homedetails/123-Walnut-Ave-Bella-Villa-MO-63125/7890123456_zpid/"
         },
         {
@@ -477,6 +479,7 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
             "nearby_damaged_properties": 0,
             "neighborhood_quality": "good",
             "home_style": "ranch",
+            "days_on_market": 20,
             "url": "https://www.zillow.com/homedetails/456-Magnolia-Dr-Florissant-MO-63031/8901234567_zpid/"
         },
         {
@@ -497,6 +500,7 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
             "nearby_damaged_properties": 0,
             "neighborhood_quality": "excellent",
             "home_style": "contemporary",
+            "days_on_market": 7,
             "url": "https://www.zillow.com/homedetails/890-Chestnut-Dr-Brentwood-MO-63042/9012345678_zpid/"
         },
         {
@@ -517,6 +521,7 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
             "nearby_damaged_properties": 0,
             "neighborhood_quality": "good",
             "home_style": "craftsman",
+            "days_on_market": 18,
             "url": "https://www.zillow.com/homedetails/123-Poplar-Ln-Maplewood-MO-63301/0123456789_zpid/"
         }
     ]
