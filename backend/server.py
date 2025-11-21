@@ -123,6 +123,9 @@ class SearchFilters(BaseModel):
     max_bedrooms: Optional[int] = None
     property_types: List[PropertyType] = Field(default=[PropertyType.SINGLE_FAMILY, PropertyType.MULTI_FAMILY])
     min_cap_rate: Optional[float] = None
+    requires_garage: bool = True
+    max_nearby_vacant_days: int = 100
+    exclude_damaged_nearby: bool = True
     limit: int = Field(default=50, le=100)
 
 class EmailPreferences(BaseModel):
