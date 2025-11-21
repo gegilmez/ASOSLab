@@ -82,8 +82,10 @@ function App() {
   
   // Email preferences
   const [email, setEmail] = useState("");
-  const [emailMinCapRate, setEmailMinCapRate] = useState(6);
+  const [emailMinCapRate, setEmailMinCapRate] = useState(7);
   const [emailMinROI, setEmailMinROI] = useState(8);
+  const [emailMinIRR, setEmailMinIRR] = useState(10);
+  const [emailFrequency, setEmailFrequency] = useState("weekly");
   const [dayOfWeek, setDayOfWeek] = useState("monday");
   const [emailEnabled, setEmailEnabled] = useState(true);
   
