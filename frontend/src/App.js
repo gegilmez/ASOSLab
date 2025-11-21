@@ -788,6 +788,47 @@ function App() {
                           )}
                         </div>
                         
+                        {/* RECA Contamination Warning */}
+                        {property.in_reca_zone && (
+                          <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+                            <div className="flex items-start gap-2">
+                              <svg className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
+                              </svg>
+                              <div className="flex-1">
+                                <p className="text-sm font-semibold text-red-900">RECA Contamination Zone</p>
+                                <p className="text-xs text-red-800 mt-1">{property.contamination_notes || "Property located in RECA impacted area"}</p>
+                                {(property.proximity_to_coldwater_creek === "immediate" || property.proximity_to_coldwater_creek === "near") && (
+                                  <div className="mt-2 flex items-center gap-1 text-xs">
+                                    <span className={`px-2 py-0.5 rounded ${
+                                      property.proximity_to_coldwater_creek === "immediate" ? "bg-red-200 text-red-900" : "bg-orange-200 text-orange-900"
+                                    }`}>
+                                      Cold Water Creek: {property.proximity_to_coldwater_creek}
+                                    </span>
+                                  </div>
+                                )}
+                                {(property.proximity_to_westlake_landfill === "immediate" || property.proximity_to_westlake_landfill === "near") && (
+                                  <div className="mt-1 flex items-center gap-1 text-xs">
+                                    <span className={`px-2 py-0.5 rounded ${
+                                      property.proximity_to_westlake_landfill === "immediate" ? "bg-red-200 text-red-900" : "bg-orange-200 text-orange-900"
+                                    }`}>
+                                      West Lake Landfill: {property.proximity_to_westlake_landfill}
+                                    </span>
+                                  </div>
+                                )}
+                                <a 
+                                  href="https://reca-missouri-resources.org/impacted-areas/st-louis-county/" 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-xs text-red-700 underline mt-2 inline-block hover:text-red-900"
+                                >
+                                  Learn more about RECA zones →
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                        
                         {/* Editable Financial Parameters */}
                         <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-100">
                           {/* Insurance */}
