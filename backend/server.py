@@ -135,7 +135,7 @@ class PropertyAnalysis(BaseModel):
     cash_on_cash_roi: Optional[float] = None
 
 class SearchFilters(BaseModel):
-    cities: List[str] = Field(default=["Florissant", "St. Ann", "Maryland Heights", "University City", "Lemay", "Afton"])
+    cities: List[str] = Field(default=["St. Louis City", "University City", "Clayton"])
     min_price: float = 0
     max_price: float = 500000
     min_bedrooms: Optional[int] = None
