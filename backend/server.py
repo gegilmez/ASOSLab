@@ -140,6 +140,7 @@ class SearchFilters(BaseModel):
     min_bedrooms: Optional[int] = None
     max_bedrooms: Optional[int] = None
     property_types: List[PropertyType] = Field(default=[PropertyType.SINGLE_FAMILY, PropertyType.MULTI_FAMILY])
+    home_styles: Optional[List[HomeStyle]] = None
     min_cap_rate: Optional[float] = None
     requires_garage: bool = True
     max_nearby_vacant_days: int = 100
