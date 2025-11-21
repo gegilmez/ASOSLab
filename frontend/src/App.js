@@ -425,8 +425,32 @@ function App() {
                           </div>
                         </div>
                         
+                        {/* Property Features */}
+                        <div className="flex gap-2 flex-wrap pt-2">
+                          {property.has_garage && (
+                            <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">
+                              🚗 {property.garage_spaces || 1} Car Garage
+                            </Badge>
+                          )}
+                          {property.neighborhood_quality && (
+                            <Badge variant="secondary" className={
+                              property.neighborhood_quality === 'excellent' ? 'bg-green-100 text-green-800 border-green-200' :
+                              property.neighborhood_quality === 'good' ? 'bg-blue-100 text-blue-800 border-blue-200' :
+                              'bg-slate-100 text-slate-800 border-slate-200'
+                            }>
+                              {property.neighborhood_quality === 'excellent' ? '⭐ Excellent' :
+                               property.neighborhood_quality === 'good' ? '✓ Good' : property.neighborhood_quality} Area
+                            </Badge>
+                          )}
+                          {property.nearby_vacant_properties === 0 && property.nearby_damaged_properties === 0 && (
+                            <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 border-emerald-200">
+                              ✓ Clean Neighborhood
+                            </Badge>
+                          )}
+                        </div>
+                        
                         {/* Additional Info */}
-                        <div className="text-sm text-slate-600 space-y-1 pt-2">
+                        <div className="text-sm text-slate-600 space-y-1 pt-3 border-t border-slate-100">
                           <p>Property Tax: ${property.property_tax?.toLocaleString()}/year</p>
                           <p>Insurance: ${property.insurance?.toLocaleString()}/year</p>
                           <p>NOI: ${property.noi?.toLocaleString()}/year</p>
