@@ -167,6 +167,58 @@ class EmailPreferences(BaseModel):
     enabled: bool = True
 
 # Service Functions
+def assess_contamination_risk(prop: dict) -> dict:
+    """Assess RECA contamination zone status and proximity to contamination sites"""
+    
+    # RECA impacted ZIP codes
+    reca_zips = ["63031", "63033", "63034", "63042", "63043", "63044", "63045", 
+                 "63074", "63114", "63121", "63134", "63135", "63138", "63140", "63145"]
+    
+    # RECA impacted cities/neighborhoods
+    reca_areas = ["Berkeley", "Black Jack", "Bridgeton", "Ferguson", "Florissant", 
+                  "Hazelwood", "Maryland Heights", "Overland", "St. Ann", "Saint Ann"]
+    
+    zip_code = str(prop.get('zip_code', ''))
+    city = prop.get('city', '').lower()
+    
+    # Check if in RECA zone
+    prop['in_reca_zone'] = zip_code in reca_zips or any(area.lower() in city for area in reca_areas)
+    
+    # Estimate proximity based on city/zip
+    # Immediate proximity cities (right next to contamination sites)
+    immediate_cities = ["bridgeton", "hazelwood", "berkeley", "ferguson"]
+    near_cities = ["florissant", "maryland heights", "overland", "st. ann", "saint ann"]
+    
+    if any(city_name in city for city_name in immediate_cities):
+        prop['proximity_to_coldwater_creek'] = "immediate"
+        prop['proximity_to_westlake_landfill'] = "immediate" if "bridgeton" in city or "hazelwood" in city else "near"
+    elif any(city_name in city for city_name in near_cities):
+        prop['proximity_to_coldwater_creek'] = "near"
+        prop['proximity_to_westlake_landfill'] = "moderate"
+    elif prop['in_reca_zone']:
+        prop['proximity_to_coldwater_creek'] = "moderate"
+        prop['proximity_to_westlake_landfill'] = "moderate"
+    else:
+        prop['proximity_to_coldwater_creek'] = "far"
+        prop['proximity_to_westlake_landfill'] = "far"
+    
+    # Add contamination notes
+    if prop['in_reca_zone']:
+        sites = []
+        if prop['proximity_to_coldwater_creek'] in ["immediate", "near"]:
+            sites.append("Cold Water Creek")
+        if prop['proximity_to_westlake_landfill'] in ["immediate", "near"]:
+            sites.append("West Lake Landfill")
+        
+        if sites:
+            prop['contamination_notes'] = f"RECA impacted area. Near: {', '.join(sites)}"
+        else:
+            prop['contamination_notes'] = "RECA impacted area"
+    else:
+        prop['contamination_notes'] = None
+    
+    return prop
+
 async def estimate_property_values(prop: dict) -> dict:
     """Estimate missing property values using St. Louis averages"""
     
