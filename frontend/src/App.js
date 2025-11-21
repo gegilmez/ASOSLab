@@ -549,27 +549,31 @@ function App() {
                         </div>
                         
                         {/* Investment Metrics */}
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-3 gap-3">
                           <div className="bg-blue-50 rounded-lg p-3">
                             <p className="text-xs text-slate-600 mb-1">Cap Rate</p>
-                            <p className="text-xl font-bold text-blue-700">{property.cap_rate?.toFixed(2)}%</p>
+                            <p className="text-lg font-bold text-blue-700">{property.cap_rate?.toFixed(2)}%</p>
                           </div>
                           <div className="bg-emerald-50 rounded-lg p-3">
                             <p className="text-xs text-slate-600 mb-1">ROI</p>
-                            <p className="text-xl font-bold text-emerald-700">{property.roi?.toFixed(2)}%</p>
+                            <p className="text-lg font-bold text-emerald-700">{property.roi?.toFixed(2)}%</p>
+                          </div>
+                          <div className="bg-indigo-50 rounded-lg p-3">
+                            <p className="text-xs text-slate-600 mb-1">IRR</p>
+                            <p className="text-lg font-bold text-indigo-700">{property.irr?.toFixed(2)}%</p>
                           </div>
                           <div className="bg-purple-50 rounded-lg p-3">
                             <p className="text-xs text-slate-600 mb-1">Cash Flow</p>
-                            <p className="text-lg font-bold text-purple-700">${property.annual_cash_flow?.toLocaleString()}/yr</p>
+                            <p className="text-sm font-bold text-purple-700">${property.annual_cash_flow?.toLocaleString()}/yr</p>
                           </div>
-                          <div className="bg-amber-50 rounded-lg p-3 relative group cursor-pointer" onClick={() => setEditingProperty(property.zpid)}>
+                          <div className="bg-amber-50 rounded-lg p-3 relative group cursor-pointer col-span-2" onClick={() => {setEditingProperty(property.zpid); setEditingField('monthly_rent');}}>
                             <p className="text-xs text-slate-600 mb-1 flex items-center justify-between">
                               Est. Rent
                               <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">✏️ Edit</span>
                             </p>
-                            {editingProperty === property.zpid ? (
+                            {editingProperty === property.zpid && editingField === 'monthly_rent' ? (
                               <div className="flex items-center gap-2">
-                                <span className="text-lg font-bold text-amber-700">$</span>
+                                <span className="text-sm font-bold text-amber-700">$</span>
                                 <Input
                                   type="number"
                                   defaultValue={property.monthly_rent}
@@ -579,15 +583,15 @@ function App() {
                                       updatePropertyRent(property.zpid, e.target.value);
                                     }
                                   }}
-                                  className="h-8 text-lg font-bold text-amber-700 px-1 py-0"
+                                  className="h-7 text-sm font-bold text-amber-700 px-1 py-0"
                                   autoFocus
                                   onClick={(e) => e.stopPropagation()}
                                   data-testid={`rent-input-${index}`}
                                 />
-                                <span className="text-sm font-bold text-amber-700">/mo</span>
+                                <span className="text-xs font-bold text-amber-700">/mo</span>
                               </div>
                             ) : (
-                              <p className="text-lg font-bold text-amber-700 hover:underline">${property.monthly_rent?.toLocaleString()}/mo</p>
+                              <p className="text-sm font-bold text-amber-700 hover:underline">${property.monthly_rent?.toLocaleString()}/mo</p>
                             )}
                           </div>
                         </div>
