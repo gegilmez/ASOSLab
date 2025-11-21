@@ -658,6 +658,48 @@ async def get_property_details(zpid: str):
         logger.error(f"Error fetching property: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@api_router.patch("/properties/{zpid}")
+async def update_property_details(zpid: str, updates: dict):
+    """Update property financial details and recalculate metrics"""
+    try:
+        prop = await db.properties.find_one({"zpid": zpid}, {"_id": 0})
+        if not prop:
+            raise HTTPException(status_code=404, detail="Property not found")
+        
+        # Update fields
+        for key, value in updates.items():
+            if key in ['monthly_rent', 'insurance', 'deferred_maintenance', 'closing_cost_rate', 'interest_rate', 'down_payment_pct']:
+                prop[key] = float(value)
+        
+        # Recalculate analysis
+        analysis = await calculate_property_analysis(prop, prop['price'])
+        
+        # Calculate IRR
+        annual_cf = analysis.annual_cash_flow
+        cash_flows = [annual_cf * (1.02 ** year) for year in range(10)]
+        initial_investment = prop['price'] * prop.get('down_payment_pct', 0.20)
+        irr_value = calculate_irr(cash_flows, initial_investment, 10)
+        
+        # Update calculated fields
+        prop['cap_rate'] = round(analysis.cap_rate, 2)
+        prop['roi'] = round(analysis.cash_on_cash_roi, 2)
+        prop['annual_cash_flow'] = round(analysis.annual_cash_flow, 2)
+        prop['noi'] = round(analysis.noi, 2)
+        prop['irr'] = round(irr_value, 2)
+        
+        # Save to database
+        await db.properties.update_one(
+            {"zpid": zpid},
+            {"$set": prop}
+        )
+        
+        return PropertyListing(**prop)
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating property: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @api_router.post("/email-preferences")
 async def save_email_preferences(prefs: EmailPreferences):
     """Save email notification preferences"""
