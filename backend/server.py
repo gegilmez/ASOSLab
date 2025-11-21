@@ -487,6 +487,10 @@ async def search_properties(filters: SearchFilters):
                 if filters.requires_garage and not property_data.get('has_garage'):
                     continue
                 
+                # Apply home style filter
+                if filters.home_styles and property_data.get('home_style') not in filters.home_styles:
+                    continue
+                
                 # Apply neighborhood quality filters
                 if filters.exclude_damaged_nearby and property_data.get('nearby_damaged_properties', 0) > 0:
                     continue
