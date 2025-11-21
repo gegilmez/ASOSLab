@@ -968,10 +968,11 @@ function App() {
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
                     <h4 className="font-semibold text-blue-900 mb-2">How it works</h4>
                     <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
-                      <li>Weekly emails sent every Monday at 9 AM</li>
-                      <li>Only properties matching your criteria are included</li>
+                      <li>Emails sent based on your selected frequency</li>
+                      <li>Only properties matching your Cap Rate, ROI, and IRR criteria</li>
                       <li>Direct links to view properties on Zillow</li>
-                      <li>Detailed investment metrics for each property</li>
+                      <li>Detailed investment metrics (Cap Rate, ROI, IRR, Cash Flow)</li>
+                      <li>Weekly = Monday 9 AM, Daily = 9 AM, Bi-Weekly = Every other Monday, Monthly = 1st of month</li>
                     </ul>
                   </div>
                 </CardContent>
