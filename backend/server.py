@@ -100,6 +100,7 @@ class PropertyListing(BaseModel):
     roi: Optional[float] = None
     annual_cash_flow: Optional[float] = None
     noi: Optional[float] = None
+    irr: Optional[float] = None  # Internal Rate of Return
     
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
