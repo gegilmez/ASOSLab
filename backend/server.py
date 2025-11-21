@@ -85,6 +85,7 @@ class PropertyListing(BaseModel):
     nearby_damaged_properties: Optional[int] = 0
     neighborhood_quality: Optional[str] = "good"  # excellent, good, fair, poor
     home_style: Optional[HomeStyle] = HomeStyle.OTHER
+    days_on_market: Optional[int] = 0
     
     # Analysis fields
     monthly_rent: Optional[float] = None
