@@ -73,6 +73,7 @@ function App() {
   const [excludeVacantNearby, setExcludeVacantNearby] = useState(true);
   const [maxVacantDays, setMaxVacantDays] = useState(100);
   const [minDaysOnMarket, setMinDaysOnMarket] = useState(0);
+  const [resultLimit, setResultLimit] = useState(50);
   const [selectedHomeStyles, setSelectedHomeStyles] = useState([]);
   
   // For inline editing
