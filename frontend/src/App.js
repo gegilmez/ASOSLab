@@ -583,10 +583,35 @@ function App() {
                       <CardContent className="pt-6 space-y-4">
                         {/* Price and Details */}
                         <div className="flex items-center justify-between pb-4 border-b border-slate-200">
-                          <div>
-                            <p className="text-3xl font-bold text-slate-900" style={{fontFamily: 'Space Grotesk, sans-serif'}}>
-                              ${property.price?.toLocaleString()}
-                            </p>
+                          <div className="flex-1">
+                            <div 
+                              className="cursor-pointer hover:bg-slate-50 rounded p-2 -m-2 transition-colors"
+                              onClick={() => {setEditingProperty(property.zpid); setEditingField('price');}}
+                            >
+                              <p className="text-xs text-slate-500 mb-1 flex items-center gap-1">
+                                Purchase Price
+                                <span className="opacity-50 hover:opacity-100 transition-opacity">✏️</span>
+                              </p>
+                              {editingProperty === property.zpid && editingField === 'price' ? (
+                                <div className="flex items-center gap-2">
+                                  <span className="text-2xl font-bold text-slate-900">$</span>
+                                  <Input
+                                    type="number"
+                                    defaultValue={property.price}
+                                    onBlur={(e) => updatePropertyField(property.zpid, 'price', e.target.value)}
+                                    onKeyDown={(e) => e.key === 'Enter' && updatePropertyField(property.zpid, 'price', e.target.value)}
+                                    className="h-10 text-2xl font-bold px-2"
+                                    autoFocus
+                                    onClick={(e) => e.stopPropagation()}
+                                    data-testid={`price-input-${index}`}
+                                  />
+                                </div>
+                              ) : (
+                                <p className="text-3xl font-bold text-slate-900 hover:text-blue-600 transition-colors" style={{fontFamily: 'Space Grotesk, sans-serif'}}>
+                                  ${property.price?.toLocaleString()}
+                                </p>
+                              )}
+                            </div>
                             <p className="text-sm text-slate-600 mt-1">
                               {property.bedrooms || 'N/A'} bed • {property.bathrooms || 'N/A'} bath • {property.sqft?.toLocaleString() || 'N/A'} sqft
                             </p>
