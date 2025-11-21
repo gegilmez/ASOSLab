@@ -152,8 +152,10 @@ class SearchFilters(BaseModel):
 
 class EmailPreferences(BaseModel):
     email: str
-    min_cap_rate: float = 0.05
+    min_cap_rate: float = 0.07
     min_roi: float = 0.08
+    min_irr: float = 0.10
+    frequency: str = "weekly"  # daily, weekly, biweekly, monthly
     day_of_week: str = "monday"
     enabled: bool = True
 
