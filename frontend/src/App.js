@@ -63,6 +63,9 @@ function App() {
         max_bedrooms: maxBedrooms,
         property_types: propertyType === "both" ? ["single_family", "multi_family"] : [propertyType],
         min_cap_rate: minCapRate / 100,
+        requires_garage: requiresGarage,
+        max_nearby_vacant_days: 100,
+        exclude_damaged_nearby: excludeDamagedNearby,
         limit: 50
       });
       
