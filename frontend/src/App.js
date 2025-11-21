@@ -466,6 +466,28 @@ function App() {
                     </p>
                   </div>
                   
+                  {/* Number of Results */}
+                  <div className="space-y-2 pt-4 border-t border-slate-200">
+                    <Label htmlFor="result-limit" className="text-base font-semibold">Number of Properties to Display</Label>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        id="result-limit"
+                        type="number"
+                        min="1"
+                        max="100"
+                        step="10"
+                        value={resultLimit}
+                        onChange={(e) => setResultLimit(Number(e.target.value))}
+                        className="flex-1"
+                        data-testid="result-limit-input"
+                      />
+                      <span className="text-sm font-medium text-slate-700 whitespace-nowrap">properties</span>
+                    </div>
+                    <p className="text-xs text-slate-500">
+                      Top {resultLimit} properties sorted by highest Cap Rate and ROI (max: 100)
+                    </p>
+                  </div>
+                  
                   {/* Property Requirements */}
                   <div className="space-y-4 pt-4 border-t border-slate-200">
                     <Label className="text-base font-semibold">Property Requirements</Label>
