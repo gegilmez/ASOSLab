@@ -26,9 +26,13 @@ function App() {
   const [minBedrooms, setMinBedrooms] = useState(2);
   const [maxBedrooms, setMaxBedrooms] = useState(3);
   const [propertyType, setPropertyType] = useState("single_family");
-  const [minCapRate, setMinCapRate] = useState(5);
+  const [minCapRate, setMinCapRate] = useState(7);
   const [requiresGarage, setRequiresGarage] = useState(true);
   const [excludeDamagedNearby, setExcludeDamagedNearby] = useState(true);
+  const [excludeVacantNearby, setExcludeVacantNearby] = useState(true);
+  
+  // For inline editing
+  const [editingProperty, setEditingProperty] = useState(null);
   
   // Email preferences
   const [email, setEmail] = useState("");
