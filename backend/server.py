@@ -520,6 +520,16 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
 async def root():
     return {"message": "Real Estate Property Analyzer API", "version": "1.0.0"}
 
+@api_router.get("/cities")
+async def get_cities(force_refresh: bool = False):
+    """Get active cities from spreadsheet (cached for 1 week)"""
+    try:
+        cities = await get_cached_cities(force_refresh=force_refresh)
+        return {"cities": cities, "count": len(cities)}
+    except Exception as e:
+        logger.error(f"Error getting cities: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @api_router.post("/properties/search", response_model=List[PropertyListing])
 async def search_properties(filters: SearchFilters):
     """Search and analyze properties based on filters"""
