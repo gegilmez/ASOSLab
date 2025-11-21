@@ -19,10 +19,49 @@ function App() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("search");
-  const [cities, setCities] = useState([]);
+  
+  const cities = [
+    "Affton",
+    "Ballwin",
+    "Bella Villa",
+    "Brentwood",
+    "Clayton",
+    "Concord",
+    "Crestwood",
+    "Des Peres",
+    "Florissant",
+    "Frontenac",
+    "Glendale",
+    "Grantwood Village",
+    "Hillsdale",
+    "Huntleigh",
+    "Kirkwood",
+    "Lakeshire",
+    "Lemay",
+    "Manchester",
+    "Maplewood",
+    "Marlborough",
+    "Maryland Heights",
+    "Mehlville",
+    "Oakland",
+    "Olivette",
+    "Overland",
+    "Richmond Heights",
+    "Rock Hill",
+    "Sappington",
+    "Shrewsbury",
+    "Southwest Garden",
+    "St. Ann",
+    "The Hill",
+    "University City",
+    "Velda City",
+    "Warson Woods",
+    "Webster Groves",
+    "St. Charles"
+  ];
   
   // Search filters
-  const [selectedCities, setSelectedCities] = useState([]);
+  const [selectedCities, setSelectedCities] = useState(["Lemay", "Florissant", "St. Ann", "The Hill", "Affton", "Bella Villa"]);
   const [minPrice, setMinPrice] = useState(100000);
   const [maxPrice, setMaxPrice] = useState(250000);
   const [minBedrooms, setMinBedrooms] = useState(2);
