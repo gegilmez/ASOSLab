@@ -554,9 +554,22 @@ function App() {
                       <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 pb-4">
                         <div className="flex justify-between items-start">
                           <div className="flex-1">
-                            <CardTitle className="text-xl mb-1" style={{fontFamily: 'Space Grotesk, sans-serif'}}>
-                              {property.address}
-                            </CardTitle>
+                            <div className="flex items-center gap-2 mb-1">
+                              <CardTitle className="text-xl" style={{fontFamily: 'Space Grotesk, sans-serif'}}>
+                                {property.address}
+                              </CardTitle>
+                              {property.url && (
+                                <a 
+                                  href={property.url} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-blue-600 hover:text-blue-800 transition-colors"
+                                  data-testid={`zillow-link-${index}`}
+                                >
+                                  <ExternalLink className="h-4 w-4" />
+                                </a>
+                              )}
+                            </div>
                             <CardDescription className="flex items-center gap-1">
                               <MapPin className="h-3 w-3" />
                               {property.city}, {property.state} {property.zip_code}
