@@ -589,10 +589,14 @@ function App() {
                                   href={property.url} 
                                   target="_blank" 
                                   rel="noopener noreferrer"
-                                  className="text-blue-600 hover:text-blue-800 transition-colors"
-                                  data-testid={`zillow-link-${index}`}
+                                  className="flex items-center gap-1 px-2 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md transition-colors text-xs font-medium"
+                                  data-testid={`zillow-link-header-${index}`}
+                                  title="View on Zillow"
                                 >
-                                  <ExternalLink className="h-4 w-4" />
+                                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/>
+                                  </svg>
+                                  Zillow
                                 </a>
                               )}
                             </div>
