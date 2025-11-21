@@ -578,51 +578,35 @@ function App() {
                   {properties.map((property, index) => (
                     <Card key={property.zpid} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm overflow-hidden group" data-testid={`property-card-${index}`}>
                       <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 pb-4">
-                        <div className="flex justify-between items-start">
+                        <div className="flex justify-between items-start gap-3">
                           <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              {property.url ? (
-                                <a
-                                  href={property.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="group flex items-center gap-2"
-                                  data-testid={`address-link-${index}`}
-                                >
-                                  <CardTitle className="text-xl text-slate-900 group-hover:text-blue-600 transition-colors cursor-pointer" style={{fontFamily: 'Space Grotesk, sans-serif'}}>
-                                    {property.address}
-                                  </CardTitle>
-                                  <ExternalLink className="h-4 w-4 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                </a>
-                              ) : (
-                                <CardTitle className="text-xl" style={{fontFamily: 'Space Grotesk, sans-serif'}}>
-                                  {property.address}
-                                </CardTitle>
-                              )}
-                              {property.url && (
-                                <a 
-                                  href={property.url} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="flex items-center gap-1 px-2 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md transition-colors text-xs font-medium"
-                                  data-testid={`zillow-badge-${index}`}
-                                  title="View on Zillow"
-                                >
-                                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/>
-                                  </svg>
-                                  Zillow
-                                </a>
-                              )}
-                            </div>
+                            <CardTitle className="text-xl mb-1" style={{fontFamily: 'Space Grotesk, sans-serif'}}>
+                              {property.address}
+                            </CardTitle>
                             <CardDescription className="flex items-center gap-1">
                               <MapPin className="h-3 w-3" />
                               {property.city}, {property.state} {property.zip_code}
                             </CardDescription>
                           </div>
-                          <Badge className="bg-green-100 text-green-800 border-green-200" data-testid={`cap-rate-${index}`}>
-                            {property.cap_rate?.toFixed(1)}% Cap
-                          </Badge>
+                          <div className="flex flex-col gap-2 items-end">
+                            <Badge className="bg-green-100 text-green-800 border-green-200" data-testid={`cap-rate-${index}`}>
+                              {property.cap_rate?.toFixed(1)}% Cap
+                            </Badge>
+                            {property.url && (
+                              <a 
+                                href={property.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors text-sm font-semibold shadow-sm"
+                                data-testid={`zillow-header-btn-${index}`}
+                              >
+                                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                  <path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/>
+                                </svg>
+                                View on Zillow
+                              </a>
+                            )}
+                          </div>
                         </div>
                       </CardHeader>
                       <CardContent className="pt-6 space-y-4">
