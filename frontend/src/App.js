@@ -154,6 +154,8 @@ function App() {
         email,
         min_cap_rate: emailMinCapRate / 100,
         min_roi: emailMinROI / 100,
+        min_irr: emailMinIRR / 100,
+        frequency: emailFrequency,
         day_of_week: dayOfWeek,
         enabled: emailEnabled
       });
