@@ -395,6 +395,7 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
             "nearby_damaged_properties": 0,
             "neighborhood_quality": "good",
             "home_style": "ranch",
+            "days_on_market": 30,
             "url": "https://www.zillow.com/homedetails/321-Pine-Blvd-St-Ann-MO-63074/4567890123_zpid/"
         },
         {
@@ -415,6 +416,7 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
             "nearby_damaged_properties": 0,
             "neighborhood_quality": "good",
             "home_style": "ranch",
+            "days_on_market": 8,
             "url": "https://www.zillow.com/homedetails/555-Cedar-Lane-Lemay-MO-63125/5678901234_zpid/"
         },
         {
