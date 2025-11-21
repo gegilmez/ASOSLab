@@ -128,7 +128,7 @@ function App() {
         max_nearby_vacant_days: maxVacantDays,
         exclude_damaged_nearby: excludeDamagedNearby,
         min_days_on_market: minDaysOnMarket,
-        limit: 50
+        limit: resultLimit
       });
       
       setProperties(response.data);
