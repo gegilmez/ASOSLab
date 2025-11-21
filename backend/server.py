@@ -675,6 +675,9 @@ async def search_properties(filters: SearchFilters):
                     if days_on_market < filters.min_days_on_market:
                         continue
                 
+                # Assess contamination risk
+                property_data = assess_contamination_risk(property_data)
+                
                 # Estimate missing values
                 property_data = await estimate_property_values(property_data)
                 
