@@ -188,6 +188,22 @@ function App() {
     );
   };
   
+  const handlePropertyTypeChange = (type) => {
+    setPropertyType(type);
+    
+    // Auto-adjust price ranges based on property type
+    if (type === "single_family") {
+      setMinPrice(100000);
+      setMaxPrice(175000);
+    } else if (type === "multi_family") {
+      setMinPrice(150000);
+      setMaxPrice(300000);
+    } else if (type === "both") {
+      setMinPrice(100000);
+      setMaxPrice(300000);
+    }
+  };
+  
   const recalculateProperty = (property, newMonthlyRent) => {
     // Recalculate cap rate and ROI with new rent
     const annualGrossRent = newMonthlyRent * 12;
