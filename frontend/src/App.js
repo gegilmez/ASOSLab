@@ -581,16 +581,31 @@ function App() {
                         <div className="flex justify-between items-start">
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                              <CardTitle className="text-xl" style={{fontFamily: 'Space Grotesk, sans-serif'}}>
-                                {property.address}
-                              </CardTitle>
+                              {property.url ? (
+                                <a
+                                  href={property.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="group flex items-center gap-2"
+                                  data-testid={`address-link-${index}`}
+                                >
+                                  <CardTitle className="text-xl text-slate-900 group-hover:text-blue-600 transition-colors cursor-pointer" style={{fontFamily: 'Space Grotesk, sans-serif'}}>
+                                    {property.address}
+                                  </CardTitle>
+                                  <ExternalLink className="h-4 w-4 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </a>
+                              ) : (
+                                <CardTitle className="text-xl" style={{fontFamily: 'Space Grotesk, sans-serif'}}>
+                                  {property.address}
+                                </CardTitle>
+                              )}
                               {property.url && (
                                 <a 
                                   href={property.url} 
                                   target="_blank" 
                                   rel="noopener noreferrer"
                                   className="flex items-center gap-1 px-2 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md transition-colors text-xs font-medium"
-                                  data-testid={`zillow-link-header-${index}`}
+                                  data-testid={`zillow-badge-${index}`}
                                   title="View on Zillow"
                                 >
                                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
