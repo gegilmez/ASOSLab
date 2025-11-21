@@ -288,6 +288,65 @@ function App() {
                     />
                   </div>
                   
+                  {/* Property Requirements */}
+                  <div className="space-y-4 pt-4 border-t border-slate-200">
+                    <Label className="text-base font-semibold">Property Requirements</Label>
+                    
+                    <div className="flex items-center justify-between bg-blue-50 p-4 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="bg-blue-600 p-2 rounded">
+                          <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="font-medium text-slate-900">Must Have Garage</p>
+                          <p className="text-sm text-slate-600">Property must include a garage</p>
+                        </div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={requiresGarage}
+                          onChange={(e) => setRequiresGarage(e.target.checked)}
+                          className="sr-only peer"
+                          data-testid="requires-garage-toggle"
+                        />
+                        <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                      </label>
+                    </div>
+                    
+                    <div className="flex items-center justify-between bg-amber-50 p-4 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="bg-amber-600 p-2 rounded">
+                          <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="font-medium text-slate-900">No Damaged Nearby Properties</p>
+                          <p className="text-sm text-slate-600">Exclude properties with damaged neighbors</p>
+                        </div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={excludeDamagedNearby}
+                          onChange={(e) => setExcludeDamagedNearby(e.target.checked)}
+                          className="sr-only peer"
+                          data-testid="exclude-damaged-toggle"
+                        />
+                        <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600"></div>
+                      </label>
+                    </div>
+                    
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                      <p className="text-sm text-green-800">
+                        <strong>✓ Automatically filters:</strong> Properties with nearby vacant homes (>100 days) are excluded
+                      </p>
+                    </div>
+                  </div>
+                  
                   <Button 
                     onClick={searchProperties} 
                     disabled={loading} 
