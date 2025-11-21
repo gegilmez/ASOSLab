@@ -798,12 +798,19 @@ async def send_weekly_email():
                     continue
                 
                 # Build email HTML
+                frequency_label = {
+                    "daily": "Daily",
+                    "weekly": "Weekly",
+                    "biweekly": "Bi-Weekly",
+                    "monthly": "Monthly"
+                }.get(prefs.frequency, "Weekly")
+                
                 html_content = f"""
                 <html>
                   <body style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto;">
-                    <h2 style="color: #2563eb;">Your Weekly St. Louis Property Report</h2>
+                    <h2 style="color: #2563eb;">Your {frequency_label} St. Louis Property Report</h2>
                     <p>Here are the top investment properties that match your criteria:</p>
-                    <p><strong>Criteria:</strong> Cap Rate ≥ {prefs.min_cap_rate*100}%, ROI ≥ {prefs.min_roi*100}%</p>
+                    <p><strong>Criteria:</strong> Cap Rate ≥ {prefs.min_cap_rate*100}%, ROI ≥ {prefs.min_roi*100}%, IRR ≥ {prefs.min_irr*100}%</p>
                     <hr/>
                 """
                 
