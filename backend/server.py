@@ -582,7 +582,7 @@ async def search_properties(filters: SearchFilters):
                     'neighborhood_quality': prop.get('neighborhood_quality', 'good'),
                     'home_style': prop.get('home_style', HomeStyle.OTHER),
                     'insurance': prop.get('insurance', 1000),
-                    'deferred_maintenance': prop.get('deferred_maintenance', 0),
+                    'deferred_maintenance': prop.get('deferred_maintenance', 5000),
                     'closing_cost_rate': prop.get('closing_cost_rate', 0.08),
                     'interest_rate': prop.get('interest_rate', 0.07),
                     'down_payment_pct': prop.get('down_payment_pct', 0.20)
