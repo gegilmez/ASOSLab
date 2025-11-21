@@ -737,6 +737,15 @@ async def get_email_preferences(email: str):
         logger.error(f"Error fetching preferences: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+async def refresh_city_list():
+    """Refresh city list from Google Sheets"""
+    try:
+        logger.info("Refreshing city list from spreadsheet")
+        cities = await get_cached_cities(force_refresh=True)
+        logger.info(f"City list refreshed successfully: {len(cities)} cities")
+    except Exception as e:
+        logger.error(f"Error refreshing city list: {str(e)}")
+
 async def send_weekly_email():
     """Send weekly property email to subscribed users"""
     try:
