@@ -875,6 +875,9 @@ scheduler = AsyncIOScheduler()
 
 @app.on_event("startup")
 async def startup_event():
+    # Refresh city list on startup
+    await refresh_city_list()
+    
     # Schedule weekly email every Monday at 9 AM
     scheduler.add_job(
         send_weekly_email,
@@ -882,8 +885,17 @@ async def startup_event():
         id='weekly_email',
         replace_existing=True
     )
+    
+    # Schedule weekly city list refresh every Monday at 8 AM
+    scheduler.add_job(
+        refresh_city_list,
+        CronTrigger(day_of_week='mon', hour=8, minute=0),
+        id='refresh_cities',
+        replace_existing=True
+    )
+    
     scheduler.start()
-    logger.info("Scheduler started - Weekly emails will be sent every Monday at 9 AM")
+    logger.info("Scheduler started - Weekly emails at 9 AM, city refresh at 8 AM every Monday")
 
 @app.on_event("shutdown")
 async def shutdown_event():
