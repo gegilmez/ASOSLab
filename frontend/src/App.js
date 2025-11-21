@@ -45,14 +45,6 @@ function App() {
   const [dayOfWeek, setDayOfWeek] = useState("monday");
   const [emailEnabled, setEmailEnabled] = useState(true);
   
-  const cities = [
-    "Florissant", "St. Ann", "Maryland Heights", "University City", "Lemay", "Afton",
-    "Bridgeton", "Ferguson", "Hazelwood", "St. Charles", "Overland", "Jennings",
-    "Berkeley", "Normandy", "Cool Valley", "Bel-Ridge", "Bel-Nor", "Bellefontaine Neighbors",
-    "Black Jack", "Spanish Lake", "Castle Point", "Dellwood", "Olivette", "Richmond Heights",
-    "Maplewood", "Brentwood", "Webster Groves", "Shrewsbury", "Crestwood"
-  ];
-  
   const homeStyles = [
     { value: "ranch", label: "Ranch" },
     { value: "colonial", label: "Colonial" },
