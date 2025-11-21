@@ -620,10 +620,98 @@ function App() {
                           )}
                         </div>
                         
-                        {/* Additional Info */}
-                        <div className="text-sm text-slate-600 space-y-1 pt-3 border-t border-slate-100">
+                        {/* Editable Financial Parameters */}
+                        <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-100">
+                          {/* Insurance */}
+                          <div className="bg-slate-50 rounded p-2 cursor-pointer hover:bg-slate-100" onClick={() => {setEditingProperty(property.zpid); setEditingField('insurance');}}>
+                            <p className="text-xs text-slate-600">Insurance/yr ✏️</p>
+                            {editingProperty === property.zpid && editingField === 'insurance' ? (
+                              <div className="flex items-center gap-1">
+                                <span className="text-xs">$</span>
+                                <Input
+                                  type="number"
+                                  defaultValue={property.insurance}
+                                  onBlur={(e) => updatePropertyField(property.zpid, 'insurance', e.target.value)}
+                                  onKeyDown={(e) => e.key === 'Enter' && updatePropertyField(property.zpid, 'insurance', e.target.value)}
+                                  className="h-6 text-xs px-1"
+                                  autoFocus
+                                  onClick={(e) => e.stopPropagation()}
+                                />
+                              </div>
+                            ) : (
+                              <p className="text-sm font-semibold">${property.insurance?.toLocaleString()}</p>
+                            )}
+                          </div>
+                          
+                          {/* Interest Rate */}
+                          <div className="bg-slate-50 rounded p-2 cursor-pointer hover:bg-slate-100" onClick={() => {setEditingProperty(property.zpid); setEditingField('interest_rate');}}>
+                            <p className="text-xs text-slate-600">Interest Rate ✏️</p>
+                            {editingProperty === property.zpid && editingField === 'interest_rate' ? (
+                              <div className="flex items-center gap-1">
+                                <Input
+                                  type="number"
+                                  step="0.1"
+                                  defaultValue={(property.interest_rate * 100).toFixed(1)}
+                                  onBlur={(e) => updatePropertyField(property.zpid, 'interest_rate', parseFloat(e.target.value) / 100)}
+                                  onKeyDown={(e) => e.key === 'Enter' && updatePropertyField(property.zpid, 'interest_rate', parseFloat(e.target.value) / 100)}
+                                  className="h-6 text-xs px-1"
+                                  autoFocus
+                                  onClick={(e) => e.stopPropagation()}
+                                />
+                                <span className="text-xs">%</span>
+                              </div>
+                            ) : (
+                              <p className="text-sm font-semibold">{((property.interest_rate || 0.07) * 100).toFixed(1)}%</p>
+                            )}
+                          </div>
+                          
+                          {/* Down Payment */}
+                          <div className="bg-slate-50 rounded p-2 cursor-pointer hover:bg-slate-100" onClick={() => {setEditingProperty(property.zpid); setEditingField('down_payment_pct');}}>
+                            <p className="text-xs text-slate-600">Down Payment ✏️</p>
+                            {editingProperty === property.zpid && editingField === 'down_payment_pct' ? (
+                              <div className="flex items-center gap-1">
+                                <Input
+                                  type="number"
+                                  step="1"
+                                  defaultValue={(property.down_payment_pct * 100).toFixed(0)}
+                                  onBlur={(e) => updatePropertyField(property.zpid, 'down_payment_pct', parseFloat(e.target.value) / 100)}
+                                  onKeyDown={(e) => e.key === 'Enter' && updatePropertyField(property.zpid, 'down_payment_pct', parseFloat(e.target.value) / 100)}
+                                  className="h-6 text-xs px-1"
+                                  autoFocus
+                                  onClick={(e) => e.stopPropagation()}
+                                />
+                                <span className="text-xs">%</span>
+                              </div>
+                            ) : (
+                              <p className="text-sm font-semibold">{((property.down_payment_pct || 0.20) * 100).toFixed(0)}%</p>
+                            )}
+                          </div>
+                          
+                          {/* Deferred Maintenance */}
+                          <div className="bg-slate-50 rounded p-2 cursor-pointer hover:bg-slate-100" onClick={() => {setEditingProperty(property.zpid); setEditingField('deferred_maintenance');}}>
+                            <p className="text-xs text-slate-600">Def. Maint. ✏️</p>
+                            {editingProperty === property.zpid && editingField === 'deferred_maintenance' ? (
+                              <div className="flex items-center gap-1">
+                                <span className="text-xs">$</span>
+                                <Input
+                                  type="number"
+                                  defaultValue={property.deferred_maintenance || 0}
+                                  onBlur={(e) => updatePropertyField(property.zpid, 'deferred_maintenance', e.target.value)}
+                                  onKeyDown={(e) => e.key === 'Enter' && updatePropertyField(property.zpid, 'deferred_maintenance', e.target.value)}
+                                  className="h-6 text-xs px-1"
+                                  autoFocus
+                                  onClick={(e) => e.stopPropagation()}
+                                />
+                              </div>
+                            ) : (
+                              <p className="text-sm font-semibold">${(property.deferred_maintenance || 0).toLocaleString()}</p>
+                            )}
+                          </div>
+                        </div>
+                        
+                        {/* Read-only Info */}
+                        <div className="text-xs text-slate-600 space-y-1 pt-2">
                           <p>Property Tax: ${property.property_tax?.toLocaleString()}/year</p>
-                          <p>Insurance: ${property.insurance?.toLocaleString()}/year</p>
                           <p>NOI: ${property.noi?.toLocaleString()}/year</p>
                         </div>
                       </CardContent>
