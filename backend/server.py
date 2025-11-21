@@ -679,11 +679,12 @@ async def update_property_details(zpid: str, updates: dict):
         
         # Update fields
         for key, value in updates.items():
-            if key in ['monthly_rent', 'insurance', 'deferred_maintenance', 'closing_cost_rate', 'interest_rate', 'down_payment_pct']:
+            if key in ['monthly_rent', 'insurance', 'deferred_maintenance', 'closing_cost_rate', 'interest_rate', 'down_payment_pct', 'price']:
                 prop[key] = float(value)
         
-        # Recalculate analysis
-        analysis = await calculate_property_analysis(prop, prop['price'])
+        # Recalculate analysis using the updated price
+        purchase_price = prop.get('price', prop['price'])
+        analysis = await calculate_property_analysis(prop, purchase_price)
         
         # Calculate IRR
         annual_cf = analysis.annual_cash_flow
