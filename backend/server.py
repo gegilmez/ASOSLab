@@ -284,6 +284,11 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
             "livingArea": 912,
             "homeType": "SINGLE_FAMILY",
             "propertyType": "single_family",
+            "has_garage": True,
+            "garage_spaces": 2,
+            "nearby_vacant_properties": 0,
+            "nearby_damaged_properties": 0,
+            "neighborhood_quality": "good",
             "url": "https://www.zillow.com/homedetails/130-Ruth-Dr-Florissant-MO-63031/2076622826_zpid/"
         },
         {
@@ -298,6 +303,11 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
             "livingArea": 1100,
             "homeType": "SINGLE_FAMILY",
             "propertyType": "single_family",
+            "has_garage": True,
+            "garage_spaces": 1,
+            "nearby_vacant_properties": 0,
+            "nearby_damaged_properties": 0,
+            "neighborhood_quality": "excellent",
             "url": "https://www.zillow.com/homedetails/456-Oak-Street-Maryland-Heights-MO-63043/2987123456_zpid/"
         },
         {
@@ -312,6 +322,11 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
             "livingArea": 1600,
             "homeType": "MULTI_FAMILY",
             "propertyType": "multi_family",
+            "has_garage": True,
+            "garage_spaces": 2,
+            "nearby_vacant_properties": 0,
+            "nearby_damaged_properties": 0,
+            "neighborhood_quality": "good",
             "url": "https://www.zillow.com/homedetails/789-Maple-Ave-University-City-MO-63130/3456789012_zpid/"
         },
         {
@@ -326,6 +341,11 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
             "livingArea": 1250,
             "homeType": "SINGLE_FAMILY",
             "propertyType": "single_family",
+            "has_garage": True,
+            "garage_spaces": 2,
+            "nearby_vacant_properties": 0,
+            "nearby_damaged_properties": 0,
+            "neighborhood_quality": "good",
             "url": "https://www.zillow.com/homedetails/321-Pine-Blvd-St-Ann-MO-63074/4567890123_zpid/"
         },
         {
@@ -340,6 +360,11 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
             "livingArea": 950,
             "homeType": "SINGLE_FAMILY",
             "propertyType": "single_family",
+            "has_garage": False,
+            "garage_spaces": 0,
+            "nearby_vacant_properties": 1,
+            "nearby_damaged_properties": 1,
+            "neighborhood_quality": "fair",
             "url": "https://www.zillow.com/homedetails/555-Cedar-Lane-Lemay-MO-63125/5678901234_zpid/"
         },
         {
@@ -354,6 +379,11 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
             "livingArea": 1150,
             "homeType": "SINGLE_FAMILY",
             "propertyType": "single_family",
+            "has_garage": True,
+            "garage_spaces": 1,
+            "nearby_vacant_properties": 0,
+            "nearby_damaged_properties": 0,
+            "neighborhood_quality": "good",
             "url": "https://www.zillow.com/homedetails/888-Elm-Street-Afton-MO-63123/6789012345_zpid/"
         }
     ]
