@@ -353,6 +353,7 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
             "nearby_damaged_properties": 0,
             "neighborhood_quality": "excellent",
             "home_style": "colonial",
+            "days_on_market": 25,
             "url": "https://www.zillow.com/homedetails/456-Oak-Street-Clayton-MO-63043/2987123456_zpid/"
         },
         {
