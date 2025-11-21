@@ -367,6 +367,33 @@ function App() {
                     </Select>
                   </div>
                   
+                  {/* Home Style Selection */}
+                  <div className="space-y-3">
+                    <Label className="text-base font-semibold">Home Styles (Optional)</Label>
+                    <div className="flex flex-wrap gap-2">
+                      {homeStyles.map(style => (
+                        <Badge
+                          key={style.value}
+                          variant={selectedHomeStyles.includes(style.value) ? "default" : "outline"}
+                          className="cursor-pointer px-3 py-1.5 text-sm hover:scale-105 transition-transform"
+                          onClick={() => setSelectedHomeStyles(prev =>
+                            prev.includes(style.value)
+                              ? prev.filter(s => s !== style.value)
+                              : [...prev, style.value]
+                          )}
+                          data-testid={`home-style-${style.value}`}
+                        >
+                          {style.label}
+                        </Badge>
+                      ))}
+                    </div>
+                    {selectedHomeStyles.length > 0 && (
+                      <p className="text-xs text-slate-600">
+                        Selected: {selectedHomeStyles.length} style{selectedHomeStyles.length > 1 ? 's' : ''}
+                      </p>
+                    )}
+                  </div>
+                  
                   {/* Min Cap Rate */}
                   <div className="space-y-2">
                     <Label htmlFor="cap-rate">Minimum Cap Rate (%)</Label>
