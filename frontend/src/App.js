@@ -123,7 +123,7 @@ function App() {
         home_styles: selectedHomeStyles.length > 0 ? selectedHomeStyles : null,
         min_cap_rate: minCapRate / 100,
         requires_garage: requiresGarage,
-        max_nearby_vacant_days: 100,
+        max_nearby_vacant_days: maxVacantDays,
         exclude_damaged_nearby: excludeDamagedNearby,
         limit: 50
       });
