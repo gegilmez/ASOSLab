@@ -126,6 +126,7 @@ function App() {
         requires_garage: requiresGarage,
         max_nearby_vacant_days: maxVacantDays,
         exclude_damaged_nearby: excludeDamagedNearby,
+        min_days_on_market: minDaysOnMarket,
         limit: 50
       });
       
