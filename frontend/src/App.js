@@ -811,14 +811,17 @@ function App() {
                           <p>NOI: ${property.noi?.toLocaleString()}/year</p>
                         </div>
                       </CardContent>
-                      <CardFooter className="bg-slate-50">
+                      <CardFooter className="bg-slate-50 gap-3">
                         {property.url && (
                           <Button 
-                            variant="outline" 
-                            className="w-full group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-colors"
+                            variant="default"
+                            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-md hover:shadow-lg transition-all"
                             onClick={() => window.open(property.url, '_blank')}
                             data-testid={`view-zillow-${index}`}
                           >
+                            <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/>
+                            </svg>
                             View on Zillow
                             <ExternalLink className="ml-2 h-4 w-4" />
                           </Button>
