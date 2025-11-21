@@ -31,9 +31,11 @@ function App() {
   const [requiresGarage, setRequiresGarage] = useState(true);
   const [excludeDamagedNearby, setExcludeDamagedNearby] = useState(true);
   const [excludeVacantNearby, setExcludeVacantNearby] = useState(true);
+  const [selectedHomeStyles, setSelectedHomeStyles] = useState([]);
   
   // For inline editing
   const [editingProperty, setEditingProperty] = useState(null);
+  const [editingField, setEditingField] = useState(null);
   
   // Email preferences
   const [email, setEmail] = useState("");
