@@ -787,7 +787,8 @@ async def send_weekly_email():
                 properties = await db.properties.find(
                     {
                         "cap_rate": {"$gte": prefs.min_cap_rate * 100},
-                        "roi": {"$gte": prefs.min_roi * 100}
+                        "roi": {"$gte": prefs.min_roi * 100},
+                        "irr": {"$gte": prefs.min_irr * 100}
                     },
                     {"_id": 0}
                 ).sort("cap_rate", -1).limit(10).to_list(10)
