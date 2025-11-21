@@ -126,6 +126,61 @@ function App() {
     );
   };
   
+  const recalculateProperty = (property, newMonthlyRent) => {
+    // Recalculate cap rate and ROI with new rent
+    const annualGrossRent = newMonthlyRent * 12;
+    const vacancyLoss = annualGrossRent * 0.04; // 4% vacancy rate
+    const effectiveGrossIncome = annualGrossRent - vacancyLoss;
+    
+    // Operating expenses
+    const propertyTax = property.property_tax || property.price * 0.018;
+    const insurance = property.insurance || 1000;
+    const utilities = 500;
+    const repair = effectiveGrossIncome * 0.10;
+    const maintenance = effectiveGrossIncome * 0.03;
+    const totalOperatingExpenses = propertyTax + insurance + utilities + repair + maintenance;
+    
+    // NOI
+    const noi = effectiveGrossIncome - totalOperatingExpenses;
+    
+    // Cap Rate
+    const capRate = (noi / property.price) * 100;
+    
+    // Financing
+    const downPayment = property.price * 0.20;
+    const loanAmount = property.price * 0.80;
+    const monthlyRate = 0.07 / 12;
+    const numPayments = 30 * 12;
+    const monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
+    const annualDebtService = monthlyPayment * 12;
+    
+    // Cash Flow and ROI
+    const annualCashFlow = noi - annualDebtService;
+    const roi = (annualCashFlow / downPayment) * 100;
+    
+    return {
+      ...property,
+      monthly_rent: newMonthlyRent,
+      cap_rate: capRate,
+      roi: roi,
+      annual_cash_flow: annualCashFlow,
+      noi: noi,
+      property_tax: propertyTax,
+      insurance: insurance
+    };
+  };
+  
+  const updatePropertyRent = (zpid, newRent) => {
+    setProperties(prev => prev.map(prop => {
+      if (prop.zpid === zpid) {
+        return recalculateProperty(prop, parseFloat(newRent));
+      }
+      return prop;
+    }));
+    setEditingProperty(null);
+    toast.success("Property analysis updated!");
+  };
+  
   return (
     <div className="App">
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
