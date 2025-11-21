@@ -39,6 +39,18 @@ class PropertyType(str, Enum):
     CONDO = "condo"
     TOWNHOUSE = "townhouse"
 
+class HomeStyle(str, Enum):
+    RANCH = "ranch"
+    COLONIAL = "colonial"
+    VICTORIAN = "victorian"
+    BUNGALOW = "bungalow"
+    CAPE_COD = "cape_cod"
+    SPLIT_LEVEL = "split_level"
+    CONTEMPORARY = "contemporary"
+    TUDOR = "tudor"
+    CRAFTSMAN = "craftsman"
+    OTHER = "other"
+
 class PropertyCondition(str, Enum):
     EXCELLENT = "excellent"
     GOOD = "good"
