@@ -27,6 +27,8 @@ function App() {
   const [maxBedrooms, setMaxBedrooms] = useState(3);
   const [propertyType, setPropertyType] = useState("single_family");
   const [minCapRate, setMinCapRate] = useState(5);
+  const [requiresGarage, setRequiresGarage] = useState(true);
+  const [excludeDamagedNearby, setExcludeDamagedNearby] = useState(true);
   
   // Email preferences
   const [email, setEmail] = useState("");
