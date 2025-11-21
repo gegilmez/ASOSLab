@@ -205,7 +205,9 @@ async def calculate_property_analysis(prop: dict, purchase_price: float) -> Prop
         purchase_price=purchase_price,
         monthly_rent=prop.get('monthly_rent', 1500),
         property_tax_annual=prop.get('property_tax', purchase_price * 0.018),
-        insurance_annual=prop.get('insurance', 1000)
+        insurance_annual=prop.get('insurance', 1000),
+        down_payment_pct=prop.get('down_payment_pct', 0.20),
+        interest_rate=prop.get('interest_rate', 0.07)
     )
     
     # Calculate Annual Gross Rent Revenue
