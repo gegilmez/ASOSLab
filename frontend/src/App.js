@@ -442,6 +442,29 @@ function App() {
                     />
                   </div>
                   
+                  {/* Days on Market Filter */}
+                  <div className="space-y-2">
+                    <Label htmlFor="days-on-market">Minimum Days on Market</Label>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        id="days-on-market"
+                        type="number"
+                        min="0"
+                        step="5"
+                        value={minDaysOnMarket}
+                        onChange={(e) => setMinDaysOnMarket(Number(e.target.value))}
+                        className="flex-1"
+                        data-testid="min-days-on-market-input"
+                      />
+                      <span className="text-sm font-medium text-slate-700 whitespace-nowrap">days</span>
+                    </div>
+                    <p className="text-xs text-slate-500">
+                      {minDaysOnMarket === 0 
+                        ? "Showing all properties regardless of listing duration" 
+                        : `Only show properties listed for more than ${minDaysOnMarket} days`}
+                    </p>
+                  </div>
+                  
                   {/* Property Requirements */}
                   <div className="space-y-4 pt-4 border-t border-slate-200">
                     <Label className="text-base font-semibold">Property Requirements</Label>
