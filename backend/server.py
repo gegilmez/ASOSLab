@@ -505,11 +505,18 @@ async def search_properties(filters: SearchFilters):
                 # Calculate analysis
                 analysis = await calculate_property_analysis(property_data, property_data['price'])
                 
+                # Calculate IRR (10-year projection)
+                annual_cf = analysis.annual_cash_flow
+                cash_flows = [annual_cf * (1.02 ** year) for year in range(10)]  # 2% annual growth
+                initial_investment = property_data['price'] * property_data['down_payment_pct']
+                irr_value = calculate_irr(cash_flows, initial_investment, 10)
+                
                 # Add calculated fields
                 property_data['cap_rate'] = round(analysis.cap_rate, 2)
                 property_data['roi'] = round(analysis.cash_on_cash_roi, 2)
                 property_data['annual_cash_flow'] = round(analysis.annual_cash_flow, 2)
                 property_data['noi'] = round(analysis.noi, 2)
+                property_data['irr'] = round(irr_value, 2)
                 property_data['monthly_rent'] = property_data.get('monthly_rent')
                 property_data['property_tax'] = property_data.get('property_tax')
                 property_data['insurance'] = property_data.get('insurance')
