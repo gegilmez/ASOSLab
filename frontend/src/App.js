@@ -502,9 +502,33 @@ function App() {
                             <p className="text-xs text-slate-600 mb-1">Cash Flow</p>
                             <p className="text-lg font-bold text-purple-700">${property.annual_cash_flow?.toLocaleString()}/yr</p>
                           </div>
-                          <div className="bg-amber-50 rounded-lg p-3">
-                            <p className="text-xs text-slate-600 mb-1">Est. Rent</p>
-                            <p className="text-lg font-bold text-amber-700">${property.monthly_rent?.toLocaleString()}/mo</p>
+                          <div className="bg-amber-50 rounded-lg p-3 relative group cursor-pointer" onClick={() => setEditingProperty(property.zpid)}>
+                            <p className="text-xs text-slate-600 mb-1 flex items-center justify-between">
+                              Est. Rent
+                              <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">✏️ Edit</span>
+                            </p>
+                            {editingProperty === property.zpid ? (
+                              <div className="flex items-center gap-2">
+                                <span className="text-lg font-bold text-amber-700">$</span>
+                                <Input
+                                  type="number"
+                                  defaultValue={property.monthly_rent}
+                                  onBlur={(e) => updatePropertyRent(property.zpid, e.target.value)}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                      updatePropertyRent(property.zpid, e.target.value);
+                                    }
+                                  }}
+                                  className="h-8 text-lg font-bold text-amber-700 px-1 py-0"
+                                  autoFocus
+                                  onClick={(e) => e.stopPropagation()}
+                                  data-testid={`rent-input-${index}`}
+                                />
+                                <span className="text-sm font-bold text-amber-700">/mo</span>
+                              </div>
+                            ) : (
+                              <p className="text-lg font-bold text-amber-700 hover:underline">${property.monthly_rent?.toLocaleString()}/mo</p>
+                            )}
                           </div>
                         </div>
                         
