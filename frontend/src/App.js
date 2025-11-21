@@ -411,16 +411,19 @@ function App() {
                   {/* Property Type */}
                   <div className="space-y-2">
                     <Label htmlFor="property-type">Property Type</Label>
-                    <Select value={propertyType} onValueChange={setPropertyType}>
+                    <Select value={propertyType} onValueChange={handlePropertyTypeChange}>
                       <SelectTrigger id="property-type" data-testid="property-type-select">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="single_family">Single Family</SelectItem>
-                        <SelectItem value="multi_family">Multi Family</SelectItem>
-                        <SelectItem value="both">Both</SelectItem>
+                        <SelectItem value="single_family">Single Family ($100K-$175K)</SelectItem>
+                        <SelectItem value="multi_family">Multi Family ($150K-$300K)</SelectItem>
+                        <SelectItem value="both">Both ($100K-$300K)</SelectItem>
                       </SelectContent>
                     </Select>
+                    <p className="text-xs text-slate-500">
+                      Price range auto-adjusts based on property type
+                    </p>
                   </div>
                   
                   {/* Home Style Selection */}
