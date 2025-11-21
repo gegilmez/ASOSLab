@@ -19,9 +19,10 @@ function App() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("search");
+  const [cities, setCities] = useState([]);
   
   // Search filters
-  const [selectedCities, setSelectedCities] = useState(["Florissant", "St. Ann", "Maryland Heights"]);
+  const [selectedCities, setSelectedCities] = useState([]);
   const [minPrice, setMinPrice] = useState(100000);
   const [maxPrice, setMaxPrice] = useState(250000);
   const [minBedrooms, setMinBedrooms] = useState(2);
