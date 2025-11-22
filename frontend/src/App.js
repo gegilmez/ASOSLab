@@ -673,9 +673,78 @@ function App() {
                       )}
                     </div>
                     
+                    <div className="flex items-center justify-between bg-purple-50 p-4 rounded-lg hover:bg-purple-100 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <div className="bg-purple-600 p-2 rounded">
+                          <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="font-medium text-slate-900">No Mold Issues</p>
+                          <p className="text-sm text-slate-600">Exclude properties with mold problems</p>
+                        </div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={excludeMold}
+                          onChange={(e) => setExcludeMold(e.target.checked)}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                      </label>
+                    </div>
+                    
+                    <div className="flex items-center justify-between bg-orange-50 p-4 rounded-lg hover:bg-orange-100 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <div className="bg-orange-600 p-2 rounded">
+                          <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="font-medium text-slate-900">No Foundation Issues</p>
+                          <p className="text-sm text-slate-600">Exclude properties with foundation problems</p>
+                        </div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={excludeFoundationIssues}
+                          onChange={(e) => setExcludeFoundationIssues(e.target.checked)}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
+                      </label>
+                    </div>
+                    
+                    <div className="flex items-center justify-between bg-cyan-50 p-4 rounded-lg hover:bg-cyan-100 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <div className="bg-cyan-600 p-2 rounded">
+                          <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="font-medium text-slate-900">No Flood Zone</p>
+                          <p className="text-sm text-slate-600">Exclude properties in flood zones</p>
+                        </div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={excludeFloodZone}
+                          onChange={(e) => setExcludeFloodZone(e.target.checked)}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-600"></div>
+                      </label>
+                    </div>
+                    
                     <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                       <p className="text-sm text-green-800">
-                        <strong>✓ Active Filters:</strong> {[requiresGarage && "Garage Required", excludeDamagedNearby && "No Damaged Nearby", excludeVacantNearby && "No Vacant Nearby"].filter(Boolean).join(", ") || "No filters active"}
+                        <strong>✓ Active Filters:</strong> {[requiresGarage && "Garage Required", excludeDamagedNearby && "No Damaged Nearby", excludeVacantNearby && "No Vacant Nearby", excludeMold && "No Mold", excludeFoundationIssues && "No Foundation Issues", excludeFloodZone && "No Flood Zone"].filter(Boolean).join(", ") || "No filters active"}
                       </p>
                     </div>
                   </div>
