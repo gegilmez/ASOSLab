@@ -841,11 +841,17 @@ async def search_properties(filters: SearchFilters):
                 # Calculate analysis
                 analysis = await calculate_property_analysis(property_data, property_data['price'])
                 
-                # Calculate IRR (10-year projection)
-                annual_cf = analysis.annual_cash_flow
-                cash_flows = [annual_cf * (1.02 ** year) for year in range(10)]  # 2% annual growth
-                initial_investment = property_data['price'] * property_data['down_payment_pct']
-                irr_value = calculate_irr(cash_flows, initial_investment, 10)
+                # Calculate IRR using Google Spreadsheet Dashboard Control
+                irr_value = calculate_irr_from_spreadsheet(
+                    property_data,
+                    property_data['price'],
+                    property_data.get('monthly_rent', 0),
+                    property_data.get('property_tax', property_data['price'] * 0.018),
+                    property_data.get('insurance', 1000),
+                    property_data.get('interest_rate', 0.07),
+                    property_data.get('down_payment_pct', 0.20),
+                    property_data.get('deferred_maintenance', 5000)
+                )
                 
                 # Add calculated fields
                 property_data['cap_rate'] = round(analysis.cap_rate, 2)
