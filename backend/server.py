@@ -961,7 +961,7 @@ async def export_to_sheets(data: dict):
         
         # Open the spreadsheet
         spreadsheet = client.open_by_key(sheet_id)
-        worksheet = spreadsheet.sheet1  # Use the first sheet
+        worksheet = spreadsheet.worksheet("Stl_InvPro_List")  # Use the Stl_InvPro_List sheet
         
         # Prepare data rows
         rows = []
