@@ -271,6 +271,60 @@ function App() {
     }
   };
   
+  const togglePropertySelection = (zpid) => {
+    setSelectedProperties(prev => 
+      prev.includes(zpid) ? prev.filter(id => id !== zpid) : [...prev, zpid]
+    );
+  };
+  
+  const selectAllProperties = () => {
+    if (selectedProperties.length === properties.length) {
+      setSelectedProperties([]);
+    } else {
+      setSelectedProperties(properties.map(p => p.zpid));
+    }
+  };
+  
+  const exportToSheets = async () => {
+    if (selectedProperties.length === 0) {
+      toast.error("Please select at least one property");
+      return;
+    }
+    
+    try {
+      const selectedProps = properties.filter(p => selectedProperties.includes(p.zpid));
+      const response = await axios.post(`${API}/export-to-sheets`, { properties: selectedProps });
+      toast.success(`${selectedProperties.length} properties exported to Google Sheets!`);
+    } catch (error) {
+      console.error("Error exporting to sheets:", error);
+      toast.error("Failed to export to Google Sheets");
+    }
+  };
+  
+  const emailSelectedProperties = async () => {
+    if (selectedProperties.length === 0) {
+      toast.error("Please select at least one property");
+      return;
+    }
+    
+    if (!email) {
+      toast.error("Please enter your email address in Email Setup tab");
+      return;
+    }
+    
+    try {
+      const selectedProps = properties.filter(p => selectedProperties.includes(p.zpid));
+      const response = await axios.post(`${API}/email-selected-properties`, { 
+        properties: selectedProps,
+        email: email 
+      });
+      toast.success(`${selectedProperties.length} properties emailed to ${email}!`);
+    } catch (error) {
+      console.error("Error emailing properties:", error);
+      toast.error("Failed to email properties");
+    }
+  };
+  
   return (
     <div className="App">
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
