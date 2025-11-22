@@ -701,6 +701,16 @@ async def search_properties(filters: SearchFilters):
                     if days_on_market < filters.min_days_on_market:
                         continue
                 
+                # Apply property condition filters (mold, foundation, flood zone)
+                # Note: These flags may not always be available from Zillow API
+                # We set defaults to False to be conservative
+                if filters.exclude_mold and property_data.get('has_mold', False):
+                    continue
+                if filters.exclude_foundation_issues and property_data.get('has_foundation_issues', False):
+                    continue
+                if filters.exclude_flood_zone and property_data.get('in_flood_zone', False):
+                    continue
+                
                 # Assess contamination risk
                 property_data = assess_contamination_risk(property_data)
                 
