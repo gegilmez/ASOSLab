@@ -966,6 +966,11 @@ async def export_to_sheets(data: dict):
         # Prepare data rows
         rows = []
         for prop in properties:
+            # Safely format percentage values
+            cap_rate = prop.get('cap_rate')
+            roi = prop.get('roi')
+            irr = prop.get('irr')
+            
             row = [
                 prop.get('address', ''),
                 prop.get('city', ''),
@@ -975,9 +980,9 @@ async def export_to_sheets(data: dict):
                 prop.get('bedrooms', ''),
                 prop.get('bathrooms', ''),
                 prop.get('sqft', ''),
-                f"{prop.get('cap_rate', 0):.2f}%",
-                f"{prop.get('roi', 0):.2f}%",
-                f"{prop.get('irr', 0):.2f}%",
+                f"{cap_rate:.2f}%" if cap_rate is not None else '',
+                f"{roi:.2f}%" if roi is not None else '',
+                f"{irr:.2f}%" if irr is not None else '',
                 prop.get('annual_cash_flow', ''),
                 prop.get('monthly_rent', ''),
                 prop.get('noi', ''),
