@@ -840,7 +840,7 @@ async def update_property_details(zpid: str, updates: dict):
         
         # Update fields
         for key, value in updates.items():
-            if key in ['monthly_rent', 'insurance', 'deferred_maintenance', 'closing_cost_rate', 'interest_rate', 'down_payment_pct', 'price']:
+            if key in ['monthly_rent', 'insurance', 'property_tax', 'deferred_maintenance', 'closing_cost_rate', 'interest_rate', 'down_payment_pct', 'price']:
                 prop[key] = float(value)
         
         # Recalculate analysis using the updated price
