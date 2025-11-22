@@ -424,6 +424,7 @@ function App() {
                 <div>
                   <h1 className="text-2xl font-bold text-slate-900" style={{fontFamily: 'Space Grotesk, sans-serif'}}>STL Property Analyzer</h1>
                   <p className="text-sm text-slate-600">Find Your Next Investment Property</p>
+                  <p className="text-xs text-slate-500 italic mt-0.5">by Gokhan Egilmez</p>
                 </div>
               </div>
               <Badge variant="secondary" className="hidden sm:flex items-center gap-1">
