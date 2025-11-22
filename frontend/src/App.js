@@ -1200,11 +1200,32 @@ function App() {
                               <p className="text-sm font-semibold">${(property.deferred_maintenance || 0).toLocaleString()}</p>
                             )}
                           </div>
+                          
+                          {/* Property Tax - EDITABLE */}
+                          <div className="bg-slate-50 rounded p-2 cursor-pointer hover:bg-slate-100" onClick={() => {setEditingProperty(property.zpid); setEditingField('property_tax');}}>
+                            <p className="text-xs text-slate-600">Property Tax ✏️</p>
+                            {editingProperty === property.zpid && editingField === 'property_tax' ? (
+                              <div className="flex items-center gap-1">
+                                <span className="text-xs">$</span>
+                                <Input
+                                  type="number"
+                                  defaultValue={property.property_tax || (property.price * 0.018)}
+                                  onBlur={(e) => updatePropertyField(property.zpid, 'property_tax', e.target.value)}
+                                  onKeyDown={(e) => e.key === 'Enter' && updatePropertyField(property.zpid, 'property_tax', e.target.value)}
+                                  className="h-6 text-xs px-1"
+                                  autoFocus
+                                  onClick={(e) => e.stopPropagation()}
+                                />
+                                <span className="text-xs">/year</span>
+                              </div>
+                            ) : (
+                              <p className="text-sm font-semibold">${(property.property_tax || property.price * 0.018)?.toLocaleString()}/year</p>
+                            )}
+                          </div>
                         </div>
                         
                         {/* Read-only Info */}
                         <div className="text-xs text-slate-600 space-y-1 pt-2">
-                          <p>Property Tax: ${property.property_tax?.toLocaleString()}/year</p>
                           <p>NOI: ${property.noi?.toLocaleString()}/year</p>
                         </div>
                       </CardContent>
