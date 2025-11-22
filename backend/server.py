@@ -806,6 +806,11 @@ async def search_properties(filters: SearchFilters):
                 if property_data['price'] < filters.min_price or property_data['price'] > filters.max_price:
                     continue
                 
+                # Apply property type filter
+                if filters.property_types and property_data['property_type'] not in filters.property_types:
+                    logger.info(f"Filtering out {property_data['zpid']} - property type {property_data['property_type']} not in {filters.property_types}")
+                    continue
+                
                 # Apply bedroom filters
                 if filters.min_bedrooms and property_data['bedrooms']:
                     if property_data['bedrooms'] < filters.min_bedrooms:
