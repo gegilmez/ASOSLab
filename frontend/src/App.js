@@ -573,9 +573,9 @@ function App() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="single_family">Single Family ($100K-$175K)</SelectItem>
-                        <SelectItem value="multi_family">Multi Family ($150K-$300K)</SelectItem>
-                        <SelectItem value="both">Both ($100K-$300K)</SelectItem>
+                        <SelectItem value="single_family">Single Family</SelectItem>
+                        <SelectItem value="multi_family">Multi Family</SelectItem>
+                        <SelectItem value="both">Both</SelectItem>
                       </SelectContent>
                     </Select>
                     <p className="text-xs text-slate-500">
