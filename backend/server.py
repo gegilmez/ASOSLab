@@ -457,8 +457,16 @@ async def search_zillow_properties(filters: SearchFilters) -> List[dict]:
                 params = {
                     "location": f"{city}, MO",
                     "status_type": "ForSale",
-                    "home_type": home_type_param
+                    "home_type": home_type_param,
+                    "minPrice": filters.min_price,
+                    "maxPrice": filters.max_price
                 }
+                
+                # Add bedroom filters to API call if specified
+                if filters.min_bedrooms:
+                    params["bedsMin"] = filters.min_bedrooms
+                if filters.max_bedrooms:
+                    params["bedsMax"] = filters.max_bedrooms
                 
                 response = await client.get(url, headers=headers, params=params)
                 
