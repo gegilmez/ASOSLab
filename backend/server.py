@@ -931,6 +931,141 @@ async def send_weekly_email():
     except Exception as e:
         logger.error(f"Error in weekly email job: {str(e)}")
 
+@api_router.post("/export-to-sheets")
+async def export_to_sheets(data: dict):
+    """Export selected properties to Google Sheets"""
+    try:
+        properties = data.get('properties', [])
+        
+        if not properties:
+            raise HTTPException(status_code=400, detail="No properties provided")
+        
+        # Note: This requires Google Sheets API setup
+        # For now, we'll log the data and return success
+        # In production, you would use google-sheets-python library
+        
+        logger.info(f"Exporting {len(properties)} properties to Google Sheets")
+        
+        # Format data for sheets
+        sheet_data = []
+        for prop in properties:
+            sheet_data.append({
+                "Address": prop.get('address', ''),
+                "City": prop.get('city', ''),
+                "State": prop.get('state', ''),
+                "ZIP": prop.get('zip_code', ''),
+                "Price": prop.get('price', ''),
+                "Bedrooms": prop.get('bedrooms', ''),
+                "Bathrooms": prop.get('bathrooms', ''),
+                "Sqft": prop.get('sqft', ''),
+                "Cap Rate": f"{prop.get('cap_rate', 0):.2f}%",
+                "ROI": f"{prop.get('roi', 0):.2f}%",
+                "IRR": f"{prop.get('irr', 0):.2f}%",
+                "Annual Cash Flow": prop.get('annual_cash_flow', ''),
+                "Monthly Rent": prop.get('monthly_rent', ''),
+                "NOI": prop.get('noi', ''),
+                "Property Tax": prop.get('property_tax', ''),
+                "Insurance": prop.get('insurance', ''),
+                "Zillow URL": prop.get('url', '')
+            })
+        
+        # TODO: Implement actual Google Sheets API integration
+        # For now, return the formatted data
+        
+        return {
+            "message": f"Successfully prepared {len(properties)} properties for export",
+            "data": sheet_data,
+            "note": "Google Sheets API integration pending"
+        }
+        
+    except Exception as e:
+        logger.error(f"Error exporting to sheets: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/email-selected-properties")
+async def email_selected_properties(data: dict):
+    """Email selected properties to user"""
+    try:
+        properties = data.get('properties', [])
+        recipient_email = data.get('email', '')
+        
+        if not properties:
+            raise HTTPException(status_code=400, detail="No properties provided")
+        
+        if not recipient_email:
+            raise HTTPException(status_code=400, detail="No email address provided")
+        
+        logger.info(f"Emailing {len(properties)} properties to {recipient_email}")
+        
+        # Build email HTML
+        html_content = f"""
+        <html>
+          <body style="font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto;">
+            <h2 style="color: #2563eb;">Your Selected St. Louis Investment Properties</h2>
+            <p>Here are the {len(properties)} properties you selected for review:</p>
+            <hr/>
+        """
+        
+        for prop in properties:
+            html_content += f"""
+            <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin: 20px 0; background: #f9fafb;">
+              <h3 style="margin-top: 0; color: #1f2937;">{prop.get('address', '')}, {prop.get('city', '')}</h3>
+              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 16px 0;">
+                <div><strong>Price:</strong> ${prop.get('price', 0):,.0f}</div>
+                <div><strong>Bedrooms:</strong> {prop.get('bedrooms', 'N/A')}</div>
+                <div><strong>Cap Rate:</strong> <span style="color: #059669; font-weight: bold;">{prop.get('cap_rate', 0):.2f}%</span></div>
+                <div><strong>ROI:</strong> <span style="color: #059669; font-weight: bold;">{prop.get('roi', 0):.2f}%</span></div>
+                <div><strong>IRR:</strong> <span style="color: #6366f1; font-weight: bold;">{prop.get('irr', 0):.2f}%</span></div>
+                <div><strong>Cash Flow:</strong> ${prop.get('annual_cash_flow', 0):,.0f}/year</div>
+                <div><strong>Monthly Rent:</strong> ${prop.get('monthly_rent', 0):,.0f}</div>
+                <div><strong>NOI:</strong> ${prop.get('noi', 0):,.0f}/year</div>
+              </div>
+              <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb;">
+                <p style="margin: 4px 0; font-size: 14px;"><strong>Property Tax:</strong> ${prop.get('property_tax', 0):,.0f}/year</p>
+                <p style="margin: 4px 0; font-size: 14px;"><strong>Insurance:</strong> ${prop.get('insurance', 0):,.0f}/year</p>
+              </div>
+              <a href="{prop.get('url', '#')}" style="display: inline-block; margin-top: 12px; padding: 10px 20px; background: #2563eb; color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">View on Zillow</a>
+            </div>
+            """
+        
+        html_content += """
+          <hr/>
+          <p style="color: #64748b; font-size: 14px; margin-top: 20px;">
+            This email was generated from your STL Real Estate Analyzer. 
+            Review these properties carefully and conduct proper due diligence before making any investment decisions.
+          </p>
+          </body>
+        </html>
+        """
+        
+        # Send email
+        message = MIMEMultipart('alternative')
+        message['Subject'] = f"Your Selected Properties - {len(properties)} Investment Opportunities"
+        message['From'] = os.environ.get('GMAIL_ADDRESS')
+        message['To'] = recipient_email
+        
+        html_part = MIMEText(html_content, 'html')
+        message.attach(html_part)
+        
+        await aiosmtplib.send(
+            message,
+            hostname=os.environ.get('SMTP_SERVER', 'smtp.gmail.com'),
+            port=int(os.environ.get('SMTP_PORT', 587)),
+            username=os.environ.get('GMAIL_ADDRESS'),
+            password=os.environ.get('GMAIL_APP_PASSWORD').replace(' ', ''),
+            start_tls=True
+        )
+        
+        logger.info(f"Successfully emailed {len(properties)} properties to {recipient_email}")
+        
+        return {
+            "message": f"Successfully emailed {len(properties)} properties to {recipient_email}"
+        }
+        
+    except Exception as e:
+        logger.error(f"Error emailing properties: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @api_router.post("/test-email")
 async def test_email_send(email: str):
     """Test email sending functionality"""
