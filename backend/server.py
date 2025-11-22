@@ -280,13 +280,13 @@ def calculate_irr_from_spreadsheet(prop: dict, purchase_price: float, monthly_re
         dashboard = spreadsheet.worksheet("Dashboard Control")
         
         # Write input values to specific cells based on "Dashboard Control" sheet structure
-        dashboard.update('F10', purchase_price)  # Purchase Price (F10)
-        dashboard.update('C10', monthly_rent)  # Monthly Rent Revenue (C10)
-        dashboard.update('F16', property_tax)  # Property Taxes per year (F16)
-        dashboard.update('F17', insurance)  # Insurance per year (F17)
-        dashboard.update('C17', interest_rate)  # Interest Rate annual (C17)
-        dashboard.update('C16', down_payment_pct)  # Down Payment % (C16)
-        dashboard.update('F13', deferred_maintenance)  # Deferred Maintenance Costs (F13)
+        dashboard.update_acell('F10', purchase_price)  # Purchase Price (F10)
+        dashboard.update_acell('C10', monthly_rent)  # Monthly Rent Revenue (C10)
+        dashboard.update_acell('F16', property_tax)  # Property Taxes per year (F16)
+        dashboard.update_acell('F17', insurance)  # Insurance per year (F17)
+        dashboard.update_acell('C17', interest_rate)  # Interest Rate annual (C17)
+        dashboard.update_acell('C16', down_payment_pct)  # Down Payment % (C16)
+        dashboard.update_acell('F13', deferred_maintenance)  # Deferred Maintenance Costs (F13)
         
         # Wait a moment for Google Sheets to recalculate formulas
         import time
