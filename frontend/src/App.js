@@ -743,10 +743,18 @@ function App() {
                     <Card key={property.zpid} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm overflow-hidden group" data-testid={`property-card-${index}`}>
                       <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 pb-4">
                         <div className="flex justify-between items-start gap-3">
-                          <div className="flex-1">
-                            <CardTitle className="text-xl mb-1" style={{fontFamily: 'Space Grotesk, sans-serif'}}>
-                              {property.address}
-                            </CardTitle>
+                          <div className="flex items-start gap-3 flex-1">
+                            <input
+                              type="checkbox"
+                              checked={selectedProperties.includes(property.zpid)}
+                              onChange={() => togglePropertySelection(property.zpid)}
+                              className="mt-1.5 w-5 h-5 text-blue-600 rounded cursor-pointer"
+                              data-testid={`select-property-${index}`}
+                            />
+                            <div className="flex-1">
+                              <CardTitle className="text-xl mb-1" style={{fontFamily: 'Space Grotesk, sans-serif'}}>
+                                {property.address}
+                              </CardTitle>
                             <CardDescription className="flex items-center gap-1">
                               <MapPin className="h-3 w-3" />
                               {property.city}, {property.state} {property.zip_code}
