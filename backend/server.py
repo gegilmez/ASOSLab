@@ -279,23 +279,29 @@ def calculate_irr_from_spreadsheet(prop: dict, purchase_price: float, monthly_re
         spreadsheet = client.open_by_key(sheet_id)
         dashboard = spreadsheet.worksheet("Dashboard Control")
         
-        # Write input values to specific cells (adjust cell references based on your sheet structure)
-        # These are example cell references - you'll need to provide the exact cells
-        dashboard.update('B2', purchase_price)  # Purchase Price
-        dashboard.update('B3', monthly_rent * 12)  # Annual Rent
-        dashboard.update('B4', property_tax)  # Property Tax
-        dashboard.update('B5', insurance)  # Insurance
-        dashboard.update('B6', interest_rate)  # Interest Rate
-        dashboard.update('B7', down_payment_pct)  # Down Payment %
-        dashboard.update('B8', deferred_maintenance)  # Deferred Maintenance
+        # Write input values to specific cells based on "Dashboard Control" sheet structure
+        dashboard.update('F10', purchase_price)  # Purchase Price (F10)
+        dashboard.update('C10', monthly_rent)  # Monthly Rent Revenue (C10)
+        dashboard.update('F16', property_tax)  # Property Taxes per year (F16)
+        dashboard.update('F17', insurance)  # Insurance per year (F17)
+        dashboard.update('C17', interest_rate)  # Interest Rate annual (C17)
+        dashboard.update('C16', down_payment_pct)  # Down Payment % (C16)
+        dashboard.update('F13', deferred_maintenance)  # Deferred Maintenance Costs (F13)
         
-        # Wait a moment for Google Sheets to recalculate
+        # Wait a moment for Google Sheets to recalculate formulas
         import time
-        time.sleep(1)
+        time.sleep(2)
         
-        # Read the calculated IRR from the sheet (adjust cell reference based on your sheet)
-        irr_cell = dashboard.acell('B20')  # Example cell - adjust to where IRR is calculated
-        irr_value = float(irr_cell.value.strip('%')) if irr_cell.value else 0.0
+        # Read the calculated IRR from cell F8
+        irr_cell = dashboard.acell('F8')  # IRR is in F8
+        irr_value_str = irr_cell.value
+        
+        # Parse IRR value (remove % sign if present)
+        if irr_value_str:
+            irr_value_str = str(irr_value_str).strip().replace('%', '')
+            irr_value = float(irr_value_str)
+        else:
+            irr_value = 0.0
         
         logger.info(f"IRR calculated from spreadsheet: {irr_value}%")
         return irr_value
