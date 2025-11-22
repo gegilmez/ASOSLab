@@ -632,13 +632,22 @@ async def search_properties(filters: SearchFilters):
                 state = prop.get('state', 'MO')
                 zipcode = prop.get('zipcode', '')
                 
-                # Extract ZIP code from address if not provided separately
-                if not zipcode and address:
+                # Extract city and ZIP code from address if not provided separately
+                if address:
                     import re
                     # Try to find 5-digit ZIP code in address
-                    zip_match = re.search(r'\b(\d{5})\b', address)
-                    if zip_match:
-                        zipcode = zip_match.group(1)
+                    if not zipcode:
+                        zip_match = re.search(r'\b(\d{5})\b', address)
+                        if zip_match:
+                            zipcode = zip_match.group(1)
+                    
+                    # Try to extract city from address format: "Street, City, State ZIP"
+                    if not city:
+                        parts = address.split(',')
+                        if len(parts) >= 2:
+                            city = parts[1].strip()  # Get the part after first comma
+                            # Remove state and zip if present
+                            city = re.sub(r'\s+(MO|Missouri)\s+\d{5}.*$', '', city).strip()
                 
                 # Get URL from API or generate fallback Zillow URL
                 zillow_url = prop.get('url', '')
