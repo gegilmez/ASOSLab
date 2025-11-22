@@ -973,17 +973,24 @@ function App() {
                                 <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
                               </svg>
                               <div className="flex-1">
-                                <p className="text-sm font-semibold text-red-900">RECA Contamination Zone</p>
+                                <p className="text-sm font-semibold text-red-900">⚠️ RECA Contamination Zone</p>
                                 <p className="text-xs text-red-800 mt-1">{property.contamination_notes || "Property located in RECA impacted area"}</p>
-                                {(property.proximity_to_coldwater_creek === "immediate" || property.proximity_to_coldwater_creek === "near") && (
-                                  <div className="mt-2 flex items-center gap-1 text-xs">
-                                    <span className={`px-2 py-0.5 rounded ${
-                                      property.proximity_to_coldwater_creek === "immediate" ? "bg-red-200 text-red-900" : "bg-orange-200 text-orange-900"
-                                    }`}>
-                                      Cold Water Creek: {property.proximity_to_coldwater_creek}
-                                    </span>
-                                  </div>
-                                )}
+                                <p className="text-xs text-red-700 mt-1 font-medium">ZIP Code: {property.zip_code}</p>
+                                
+                                <div className="mt-2 space-y-1">
+                                  <p className="text-xs font-semibold text-red-900">Proximity to Contamination Sites:</p>
+                                  {property.proximity_to_coldwater_creek && (
+                                    <div className="flex items-center gap-1 text-xs">
+                                      <span className={`px-2 py-0.5 rounded font-medium ${
+                                        property.proximity_to_coldwater_creek === "immediate" ? "bg-red-600 text-white" : 
+                                        property.proximity_to_coldwater_creek === "near" ? "bg-orange-500 text-white" :
+                                        property.proximity_to_coldwater_creek === "moderate" ? "bg-yellow-400 text-slate-900" :
+                                        "bg-green-200 text-green-900"
+                                      }`}>
+                                        Coldwater Creek: {property.proximity_to_coldwater_creek.toUpperCase()}
+                                      </span>
+                                    </div>
+                                  )}
                                 {(property.proximity_to_westlake_landfill === "immediate" || property.proximity_to_westlake_landfill === "near") && (
                                   <div className="mt-1 flex items-center gap-1 text-xs">
                                     <span className={`px-2 py-0.5 rounded ${
