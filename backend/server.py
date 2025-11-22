@@ -252,23 +252,103 @@ async def estimate_property_values(prop: dict) -> dict:
     
     return prop
 
-def calculate_irr(cash_flows: List[float], initial_investment: float, years: int = 10) -> float:
-    """Calculate Internal Rate of Return using numpy_financial"""
+def calculate_irr_from_spreadsheet(prop: dict, purchase_price: float, monthly_rent: float, 
+                                   property_tax: float, insurance: float, interest_rate: float,
+                                   down_payment_pct: float, deferred_maintenance: float) -> float:
+    """Calculate IRR using Google Spreadsheet formulas (Dashboard Control sheet)"""
+    try:
+        import gspread
+        from oauth2client.service_account import ServiceAccountCredentials
+        
+        # Setup Google Sheets connection
+        credentials_path = os.environ.get('GOOGLE_CREDENTIALS_PATH')
+        sheet_id = os.environ.get('GOOGLE_SHEET_ID')
+        
+        if not credentials_path or not sheet_id:
+            logger.warning("Google Sheets credentials not configured, using fallback IRR calculation")
+            return calculate_irr_fallback(prop, purchase_price, monthly_rent)
+        
+        scope = [
+            'https://spreadsheets.google.com/feeds',
+            'https://www.googleapis.com/auth/drive'
+        ]
+        creds = ServiceAccountCredentials.from_json_keyfile_name(credentials_path, scope)
+        client = gspread.authorize(creds)
+        
+        # Open the "STL Property Analysis Egilmez" spreadsheet
+        spreadsheet = client.open_by_key(sheet_id)
+        dashboard = spreadsheet.worksheet("Dashboard Control")
+        
+        # Write input values to specific cells (adjust cell references based on your sheet structure)
+        # These are example cell references - you'll need to provide the exact cells
+        dashboard.update('B2', purchase_price)  # Purchase Price
+        dashboard.update('B3', monthly_rent * 12)  # Annual Rent
+        dashboard.update('B4', property_tax)  # Property Tax
+        dashboard.update('B5', insurance)  # Insurance
+        dashboard.update('B6', interest_rate)  # Interest Rate
+        dashboard.update('B7', down_payment_pct)  # Down Payment %
+        dashboard.update('B8', deferred_maintenance)  # Deferred Maintenance
+        
+        # Wait a moment for Google Sheets to recalculate
+        import time
+        time.sleep(1)
+        
+        # Read the calculated IRR from the sheet (adjust cell reference based on your sheet)
+        irr_cell = dashboard.acell('B20')  # Example cell - adjust to where IRR is calculated
+        irr_value = float(irr_cell.value.strip('%')) if irr_cell.value else 0.0
+        
+        logger.info(f"IRR calculated from spreadsheet: {irr_value}%")
+        return irr_value
+        
+    except Exception as e:
+        logger.error(f"Error calculating IRR from spreadsheet: {str(e)}")
+        # Fallback to local calculation
+        return calculate_irr_fallback(prop, purchase_price, monthly_rent)
+
+def calculate_irr_fallback(prop: dict, purchase_price: float, monthly_rent: float, years: int = 10) -> float:
+    """Fallback IRR calculation using numpy_financial"""
     import numpy as np
     import numpy_financial as npf
     
-    # Build cash flow array with initial investment as negative
+    # Estimate annual cash flow
+    annual_rent = monthly_rent * 12
+    vacancy_loss = annual_rent * 0.04
+    effective_income = annual_rent - vacancy_loss
+    
+    # Operating expenses
+    property_tax = prop.get('property_tax', purchase_price * 0.018)
+    insurance = prop.get('insurance', 1000)
+    expenses = property_tax + insurance + 500 + (effective_income * 0.13)
+    
+    # NOI
+    noi = effective_income - expenses
+    
+    # Debt service
+    down_payment_pct = prop.get('down_payment_pct', 0.20)
+    interest_rate = prop.get('interest_rate', 0.07)
+    loan_amount = purchase_price * (1 - down_payment_pct)
+    monthly_rate = interest_rate / 12
+    num_payments = 30 * 12
+    if monthly_rate > 0:
+        monthly_payment = loan_amount * (monthly_rate * (1 + monthly_rate) ** num_payments) / ((1 + monthly_rate) ** num_payments - 1)
+    else:
+        monthly_payment = loan_amount / num_payments
+    annual_debt_service = monthly_payment * 12
+    
+    # Annual cash flow
+    annual_cf = noi - annual_debt_service
+    
+    # Build cash flow array with growth
+    cash_flows = [annual_cf * (1.02 ** year) for year in range(years)]
+    initial_investment = purchase_price * down_payment_pct
     cf_array = [-initial_investment] + cash_flows
     
     try:
-        # Use numpy_financial's IRR calculation (replaces deprecated numpy.irr)
         irr = npf.irr(cf_array)
         return irr * 100 if not np.isnan(irr) else 0.0
     except:
-        # Fallback to simple approximation
-        total_cash_flows = sum(cash_flows)
         if initial_investment > 0:
-            return (total_cash_flows / initial_investment / years) * 100
+            return (sum(cash_flows) / initial_investment / years) * 100
         return 0.0
 
 async def calculate_property_analysis(prop: dict, purchase_price: float) -> PropertyAnalysis:
