@@ -975,6 +975,12 @@ async def export_to_sheets(data: dict):
         
         logger.info(f"Exporting {len(properties)} properties to Google Sheets")
         
+        # Debug: Log first property data to check URL field
+        if properties:
+            first_prop = properties[0]
+            logger.info(f"First property URL field: {first_prop.get('url', 'MISSING')}")
+            logger.info(f"First property keys: {list(first_prop.keys())[:10]}")
+        
         # Authenticate with Google Sheets
         credentials_path = os.environ.get('GOOGLE_CREDENTIALS_PATH')
         sheet_id = os.environ.get('GOOGLE_SHEET_ID')
