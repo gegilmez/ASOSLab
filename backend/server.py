@@ -939,11 +939,17 @@ async def update_property_details(zpid: str, updates: dict):
         purchase_price = prop.get('price', prop['price'])
         analysis = await calculate_property_analysis(prop, purchase_price)
         
-        # Calculate IRR
-        annual_cf = analysis.annual_cash_flow
-        cash_flows = [annual_cf * (1.02 ** year) for year in range(10)]
-        initial_investment = prop['price'] * prop.get('down_payment_pct', 0.20)
-        irr_value = calculate_irr(cash_flows, initial_investment, 10)
+        # Calculate IRR using Google Spreadsheet Dashboard Control
+        irr_value = calculate_irr_from_spreadsheet(
+            prop,
+            prop['price'],
+            prop.get('monthly_rent', 0),
+            prop.get('property_tax', prop['price'] * 0.018),
+            prop.get('insurance', 1000),
+            prop.get('interest_rate', 0.07),
+            prop.get('down_payment_pct', 0.20),
+            prop.get('deferred_maintenance', 5000)
+        )
         
         # Update calculated fields
         prop['cap_rate'] = round(analysis.cap_rate, 2)
