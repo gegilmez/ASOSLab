@@ -755,10 +755,11 @@ function App() {
                               <CardTitle className="text-xl mb-1" style={{fontFamily: 'Space Grotesk, sans-serif'}}>
                                 {property.address}
                               </CardTitle>
-                            <CardDescription className="flex items-center gap-1">
-                              <MapPin className="h-3 w-3" />
-                              {property.city}, {property.state} {property.zip_code}
-                            </CardDescription>
+                              <CardDescription className="flex items-center gap-1">
+                                <MapPin className="h-3 w-3" />
+                                {property.city}, {property.state} {property.zip_code}
+                              </CardDescription>
+                            </div>
                           </div>
                           <div className="flex flex-col gap-2 items-end">
                             <Badge className="bg-green-100 text-green-800 border-green-200" data-testid={`cap-rate-${index}`}>
