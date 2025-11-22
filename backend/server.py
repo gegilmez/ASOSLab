@@ -88,6 +88,9 @@ class PropertyListing(BaseModel):
     neighborhood_quality: Optional[str] = "good"  # excellent, good, fair, poor
     home_style: Optional[HomeStyle] = HomeStyle.OTHER
     days_on_market: Optional[int] = 0
+    has_mold: Optional[bool] = False
+    has_foundation_issues: Optional[bool] = False
+    in_flood_zone: Optional[bool] = False
     
     # RECA contamination zone data
     in_reca_zone: Optional[bool] = False
