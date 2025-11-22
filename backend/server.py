@@ -620,19 +620,34 @@ async def search_properties(filters: SearchFilters):
         for prop in raw_properties:
             try:
                 # Parse property data
+                zpid = str(prop.get('zpid', ''))
+                address = prop.get('address', '')
+                city = prop.get('city', '')
+                state = prop.get('state', 'MO')
+                zipcode = prop.get('zipcode', '')
+                
+                # Get URL from API or generate fallback Zillow URL
+                zillow_url = prop.get('url', '')
+                if not zillow_url and zpid:
+                    # Generate Zillow URL from property details
+                    # Format: https://www.zillow.com/homedetails/ADDRESS-CITY-STATE-ZIP/ZPID_zpid/
+                    address_slug = address.replace(' ', '-').replace(',', '')
+                    city_slug = city.replace(' ', '-')
+                    zillow_url = f"https://www.zillow.com/homedetails/{address_slug}-{city_slug}-{state}-{zipcode}/{zpid}_zpid/"
+                
                 property_data = {
-                    'zpid': str(prop.get('zpid', '')),
-                    'address': prop.get('address', ''),
-                    'city': prop.get('city', ''),
-                    'state': prop.get('state', 'MO'),
-                    'zip_code': prop.get('zipcode', ''),
+                    'zpid': zpid,
+                    'address': address,
+                    'city': city,
+                    'state': state,
+                    'zip_code': zipcode,
                     'price': float(prop.get('price', 0)),
                     'bedrooms': prop.get('bedrooms'),
                     'bathrooms': prop.get('bathrooms'),
                     'sqft': prop.get('livingArea'),
                     'property_type': PropertyType.SINGLE_FAMILY if 'SINGLE' in str(prop.get('homeType', '')).upper() else PropertyType.MULTI_FAMILY,
                     'property_condition': PropertyCondition.NEEDS_TLC,
-                    'url': prop.get('url', ''),
+                    'url': zillow_url,
                     'has_garage': prop.get('has_garage', True),
                     'garage_spaces': prop.get('garage_spaces', 1),
                     'nearby_vacant_properties': prop.get('nearby_vacant_properties', 0),
