@@ -133,6 +133,9 @@ function App() {
         requires_garage: requiresGarage,
         max_nearby_vacant_days: maxVacantDays,
         exclude_damaged_nearby: excludeDamagedNearby,
+        exclude_mold: excludeMold,
+        exclude_foundation_issues: excludeFoundationIssues,
+        exclude_flood_zone: excludeFloodZone,
         min_days_on_market: minDaysOnMarket,
         limit: resultLimit
       });
