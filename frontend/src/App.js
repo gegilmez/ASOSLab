@@ -19,6 +19,7 @@ function App() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("search");
+  const [selectedProperties, setSelectedProperties] = useState([]);
   
   const cities = [
     "Affton",
