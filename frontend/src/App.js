@@ -467,7 +467,23 @@ function App() {
                 <CardContent className="space-y-6">
                   {/* Cities Selection */}
                   <div className="space-y-3">
-                    <Label className="text-base font-semibold">Select Cities</Label>
+                    <div className="flex items-center justify-between">
+                      <Label className="text-base font-semibold">Select Cities ({selectedCities.length} selected)</Label>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setSelectedCities(cities)}
+                          className="text-xs px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                        >
+                          Select All
+                        </button>
+                        <button
+                          onClick={() => setSelectedCities([])}
+                          className="text-xs px-3 py-1 bg-slate-300 text-slate-700 rounded hover:bg-slate-400 transition-colors"
+                        >
+                          Clear All
+                        </button>
+                      </div>
+                    </div>
                     <div className="flex flex-wrap gap-2">
                       {cities.map(city => (
                         <Badge
