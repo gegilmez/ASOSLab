@@ -965,8 +965,8 @@ async def export_to_sheets(data: dict):
         
         # Prepare data rows to match Stl_InvPro_List sheet structure
         # Columns: ID, Address, Sold?, # Bedrom, # Bath, Sqft, ZillowLink, Cap Rate, IRR, 
-        #          (blank), As is?, Currently Rented?, (blank), Rent Estimate, Suggested Price, 
-        #          List Price, Neighborhood, Median Rent for 2 Bed, Renter Occupied HH %, School Rating
+        #          As is?, Currently Rented?, Est. Rent, Suggested Price, List Price, 
+        #          Neighborhood, Median Rent for 2 Bed, Renter Occupied HH %, School Rating
         rows = []
         for prop in properties:
             # Safely format percentage values
@@ -981,20 +981,18 @@ async def export_to_sheets(data: dict):
                 prop.get('bedrooms', ''),                                      # Column 4: # Bedrom
                 prop.get('bathrooms', ''),                                     # Column 5: # Bath
                 prop.get('sqft', ''),                                         # Column 6: Sqft
-                prop.get('url', ''),                                          # Column 7: ZillowLink
+                prop.get('url', ''),                                          # Column 7: ZillowLink (View on Zillow URL)
                 f"{cap_rate:.2f}%" if cap_rate is not None else '',          # Column 8: Cap Rate
                 f"{irr:.2f}%" if irr is not None else '',                    # Column 9: IRR
-                '',                                                            # Column 10: (blank)
-                '',                                                            # Column 11: As is?
-                '',                                                            # Column 12: Currently Rented?
-                '',                                                            # Column 13: (blank)
-                prop.get('monthly_rent', ''),                                 # Column 14: Rent Estimate
-                '',                                                            # Column 15: Suggested Price
-                prop.get('price', ''),                                        # Column 16: List Price
-                f"{prop.get('city', '')}, {prop.get('state', '')} {prop.get('zip_code', '')}",  # Column 17: Neighborhood
-                '',                                                            # Column 18: Median Rent for 2 Bed
-                '',                                                            # Column 19: Renter Occupied HH %
-                ''                                                             # Column 20: School Rating
+                '',                                                            # Column 10: As is?
+                '',                                                            # Column 11: Currently Rented?
+                prop.get('monthly_rent', ''),                                 # Column 12: Est. Rent
+                '',                                                            # Column 13: Suggested Price
+                prop.get('price', ''),                                        # Column 14: List Price
+                f"{prop.get('city', '')}, {prop.get('state', '')} {prop.get('zip_code', '')}",  # Column 15: Neighborhood
+                '',                                                            # Column 16: Median Rent for 2 Bed
+                '',                                                            # Column 17: Renter Occupied HH %
+                ''                                                             # Column 18: School Rating
             ]
             rows.append(row)
         
