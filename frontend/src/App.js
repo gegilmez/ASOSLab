@@ -76,6 +76,9 @@ function App() {
   const [minDaysOnMarket, setMinDaysOnMarket] = useState(0);
   const [resultLimit, setResultLimit] = useState(50);
   const [selectedHomeStyles, setSelectedHomeStyles] = useState([]);
+  const [excludeMold, setExcludeMold] = useState(true);
+  const [excludeFoundationIssues, setExcludeFoundationIssues] = useState(true);
+  const [excludeFloodZone, setExcludeFloodZone] = useState(true);
   
   // For inline editing
   const [editingProperty, setEditingProperty] = useState(null);
