@@ -253,15 +253,16 @@ async def estimate_property_values(prop: dict) -> dict:
     return prop
 
 def calculate_irr(cash_flows: List[float], initial_investment: float, years: int = 10) -> float:
-    """Calculate Internal Rate of Return using Newton's method"""
+    """Calculate Internal Rate of Return using numpy_financial"""
     import numpy as np
+    import numpy_financial as npf
     
     # Build cash flow array with initial investment as negative
     cf_array = [-initial_investment] + cash_flows
     
     try:
-        # Use numpy's IRR calculation (approximation)
-        irr = np.irr(cf_array)
+        # Use numpy_financial's IRR calculation (replaces deprecated numpy.irr)
+        irr = npf.irr(cf_array)
         return irr * 100 if not np.isnan(irr) else 0.0
     except:
         # Fallback to simple approximation
