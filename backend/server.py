@@ -659,6 +659,22 @@ async def search_properties(filters: SearchFilters):
                     city_slug = city.replace(' ', '-')
                     zillow_url = f"https://www.zillow.com/homedetails/{address_slug}-{city_slug}-{state}-{zipcode}/{zpid}_zpid/"
                 
+                # Extract property tax from Zillow API if available
+                # Try different possible field names: taxHistory, annualHomeownersInsurance, etc.
+                property_tax = None
+                if 'taxHistory' in prop and prop['taxHistory']:
+                    # Get the most recent tax year
+                    tax_history = prop['taxHistory']
+                    if isinstance(tax_history, list) and len(tax_history) > 0:
+                        property_tax = float(tax_history[0].get('taxPaid', 0))
+                
+                if not property_tax and 'resoFacts' in prop:
+                    property_tax = prop['resoFacts'].get('taxAnnualAmount')
+                
+                if not property_tax and 'taxAssessedValue' in prop:
+                    # Estimate from assessed value (typically 1.8% in MO)
+                    property_tax = float(prop.get('taxAssessedValue', 0)) * 0.018
+                
                 property_data = {
                     'zpid': zpid,
                     'address': address,
@@ -678,6 +694,7 @@ async def search_properties(filters: SearchFilters):
                     'nearby_damaged_properties': prop.get('nearby_damaged_properties', 0),
                     'neighborhood_quality': prop.get('neighborhood_quality', 'good'),
                     'home_style': prop.get('home_style', HomeStyle.OTHER),
+                    'property_tax': property_tax,  # Will be estimated later if None
                     'insurance': prop.get('insurance', 1000),
                     'deferred_maintenance': prop.get('deferred_maintenance', 5000),
                     'closing_cost_rate': prop.get('closing_cost_rate', 0.08),
