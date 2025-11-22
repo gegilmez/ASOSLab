@@ -442,14 +442,15 @@ async def search_zillow_properties(filters: SearchFilters) -> List[dict]:
                 url = "https://zillow-com1.p.rapidapi.com/propertyExtendedSearch"
                 
                 # Determine Zillow home_type parameter based on property_types filter
+                # Zillow accepts: Houses, Apartments, MultiFamily, Condos, Lots, Townhomes, Manufactured
                 home_type_param = "Houses"  # Default
                 if filters.property_types:
                     if PropertyType.MULTI_FAMILY in filters.property_types and PropertyType.SINGLE_FAMILY not in filters.property_types:
-                        # Only multi-family selected
-                        home_type_param = "Apartments"
+                        # Only multi-family selected - try both Apartments and MultiFamily
+                        home_type_param = "Apartments,MultiFamily"
                     elif PropertyType.SINGLE_FAMILY in filters.property_types and PropertyType.MULTI_FAMILY in filters.property_types:
                         # Both selected
-                        home_type_param = "Houses,Apartments"
+                        home_type_param = "Houses,Apartments,MultiFamily"
                     else:
                         # Only single-family selected
                         home_type_param = "Houses"
