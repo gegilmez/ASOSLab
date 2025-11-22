@@ -991,22 +991,27 @@ function App() {
                                       </span>
                                     </div>
                                   )}
-                                {(property.proximity_to_westlake_landfill === "immediate" || property.proximity_to_westlake_landfill === "near") && (
-                                  <div className="mt-1 flex items-center gap-1 text-xs">
-                                    <span className={`px-2 py-0.5 rounded ${
-                                      property.proximity_to_westlake_landfill === "immediate" ? "bg-red-200 text-red-900" : "bg-orange-200 text-orange-900"
-                                    }`}>
-                                      West Lake Landfill: {property.proximity_to_westlake_landfill}
-                                    </span>
-                                  </div>
-                                )}
+                                  {property.proximity_to_westlake_landfill && (
+                                    <div className="flex items-center gap-1 text-xs">
+                                      <span className={`px-2 py-0.5 rounded font-medium ${
+                                        property.proximity_to_westlake_landfill === "immediate" ? "bg-red-600 text-white" : 
+                                        property.proximity_to_westlake_landfill === "near" ? "bg-orange-500 text-white" :
+                                        property.proximity_to_westlake_landfill === "moderate" ? "bg-yellow-400 text-slate-900" :
+                                        "bg-green-200 text-green-900"
+                                      }`}>
+                                        West Lake Landfill: {property.proximity_to_westlake_landfill.toUpperCase()}
+                                      </span>
+                                    </div>
+                                  )}
+                                </div>
+                                
                                 <a 
                                   href="https://reca-missouri-resources.org/impacted-areas/st-louis-county/" 
                                   target="_blank" 
                                   rel="noopener noreferrer"
-                                  className="text-xs text-red-700 underline mt-2 inline-block hover:text-red-900"
+                                  className="text-xs text-red-700 underline mt-2 inline-block hover:text-red-900 font-medium"
                                 >
-                                  Learn more about RECA zones →
+                                  📋 Learn more about RECA zones & eligibility →
                                 </a>
                               </div>
                             </div>
