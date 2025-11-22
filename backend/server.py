@@ -942,42 +942,59 @@ async def export_to_sheets(data: dict):
         if not properties:
             raise HTTPException(status_code=400, detail="No properties provided")
         
-        # Note: This requires Google Sheets API setup
-        # For now, we'll log the data and return success
-        # In production, you would use google-sheets-python library
-        
         logger.info(f"Exporting {len(properties)} properties to Google Sheets")
         
-        # Format data for sheets
-        sheet_data = []
-        for prop in properties:
-            sheet_data.append({
-                "Address": prop.get('address', ''),
-                "City": prop.get('city', ''),
-                "State": prop.get('state', ''),
-                "ZIP": prop.get('zip_code', ''),
-                "Price": prop.get('price', ''),
-                "Bedrooms": prop.get('bedrooms', ''),
-                "Bathrooms": prop.get('bathrooms', ''),
-                "Sqft": prop.get('sqft', ''),
-                "Cap Rate": f"{prop.get('cap_rate', 0):.2f}%",
-                "ROI": f"{prop.get('roi', 0):.2f}%",
-                "IRR": f"{prop.get('irr', 0):.2f}%",
-                "Annual Cash Flow": prop.get('annual_cash_flow', ''),
-                "Monthly Rent": prop.get('monthly_rent', ''),
-                "NOI": prop.get('noi', ''),
-                "Property Tax": prop.get('property_tax', ''),
-                "Insurance": prop.get('insurance', ''),
-                "Zillow URL": prop.get('url', '')
-            })
+        # Authenticate with Google Sheets
+        credentials_path = os.environ.get('GOOGLE_CREDENTIALS_PATH')
+        sheet_id = os.environ.get('GOOGLE_SHEET_ID')
         
-        # TODO: Implement actual Google Sheets API integration
-        # For now, return the formatted data
+        if not credentials_path or not sheet_id:
+            raise HTTPException(status_code=500, detail="Google Sheets credentials not configured")
+        
+        # Setup Google Sheets API
+        scope = [
+            'https://spreadsheets.google.com/feeds',
+            'https://www.googleapis.com/auth/drive'
+        ]
+        creds = ServiceAccountCredentials.from_json_keyfile_name(credentials_path, scope)
+        client = gspread.authorize(creds)
+        
+        # Open the spreadsheet
+        spreadsheet = client.open_by_key(sheet_id)
+        worksheet = spreadsheet.sheet1  # Use the first sheet
+        
+        # Prepare data rows
+        rows = []
+        for prop in properties:
+            row = [
+                prop.get('address', ''),
+                prop.get('city', ''),
+                prop.get('state', ''),
+                prop.get('zip_code', ''),
+                prop.get('price', ''),
+                prop.get('bedrooms', ''),
+                prop.get('bathrooms', ''),
+                prop.get('sqft', ''),
+                f"{prop.get('cap_rate', 0):.2f}%",
+                f"{prop.get('roi', 0):.2f}%",
+                f"{prop.get('irr', 0):.2f}%",
+                prop.get('annual_cash_flow', ''),
+                prop.get('monthly_rent', ''),
+                prop.get('noi', ''),
+                prop.get('property_tax', ''),
+                prop.get('insurance', ''),
+                prop.get('url', '')
+            ]
+            rows.append(row)
+        
+        # Append rows to the sheet
+        worksheet.append_rows(rows, value_input_option='USER_ENTERED')
+        
+        logger.info(f"Successfully exported {len(properties)} properties to Google Sheets")
         
         return {
-            "message": f"Successfully prepared {len(properties)} properties for export",
-            "data": sheet_data,
-            "note": "Google Sheets API integration pending"
+            "message": f"Successfully exported {len(properties)} properties to Google Sheets",
+            "sheet_url": f"https://docs.google.com/spreadsheets/d/{sheet_id}/edit"
         }
         
     except Exception as e:
