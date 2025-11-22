@@ -736,9 +736,17 @@ async def search_properties(filters: SearchFilters):
                 property_data['property_tax'] = property_data.get('property_tax')
                 property_data['insurance'] = property_data.get('insurance')
                 
-                # Apply cap rate filter
-                if filters.min_cap_rate and property_data['cap_rate'] < filters.min_cap_rate:
+                # Filter out negative cash flow properties
+                if property_data['annual_cash_flow'] < 0:
+                    logger.info(f"Filtering out property {property_data['zpid']} - negative cash flow: ${property_data['annual_cash_flow']}")
                     continue
+                
+                # Apply cap rate filter (convert filter from decimal to percentage for comparison)
+                if filters.min_cap_rate:
+                    min_cap_rate_pct = filters.min_cap_rate * 100  # Convert 0.07 to 7.0
+                    if property_data['cap_rate'] < min_cap_rate_pct:
+                        logger.info(f"Filtering out property {property_data['zpid']} - cap rate {property_data['cap_rate']}% below minimum {min_cap_rate_pct}%")
+                        continue
                 
                 listing = PropertyListing(**property_data)
                 analyzed_properties.append(listing)
