@@ -200,6 +200,7 @@ function App() {
   
   const searchProperties = async () => {
     setLoading(true);
+    setActiveTab("properties"); // Switch to properties tab to show loading state
     try {
       const response = await axios.post(`${API}/properties/search`, {
         cities: selectedCities,
