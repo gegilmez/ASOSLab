@@ -1180,6 +1180,10 @@ async def send_weekly_email():
     try:
         logger.info("Starting weekly email job")
         
+        if not is_db_available():
+            logger.warning("Database not available - skipping weekly email job")
+            return
+        
         # Get all active email preferences
         prefs_list = await db.email_prefs.find({"enabled": True}).to_list(100)
         
