@@ -1486,7 +1486,7 @@ scheduler = AsyncIOScheduler()
 async def startup_event():
     # Test MongoDB connection
     global client, db
-    if client and db:
+    if client is not None and db is not None:
         try:
             await client.admin.command('ping')
             logger.info("✓ MongoDB connection successful")
