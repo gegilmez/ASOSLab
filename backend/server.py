@@ -23,6 +23,10 @@ from oauth2client.service_account import ServiceAccountCredentials
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
+# Configure logging first
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 # MongoDB connection with robust error handling
 mongo_url = os.getenv('MONGO_URL', 'mongodb://localhost:27017')
 db_name = os.getenv('DB_NAME', 'real_estate_db')
@@ -44,10 +48,6 @@ except Exception as e:
 
 app = FastAPI(title="Real Estate Property Analyzer")
 api_router = APIRouter(prefix="/api")
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 # Database helper function
 def is_db_available():
