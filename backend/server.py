@@ -1067,6 +1067,9 @@ async def get_saved_properties(limit: int = Query(50, le=200)):
 @api_router.get("/properties/{zpid}", response_model=PropertyListing)
 async def get_property_details(zpid: str):
     """Get specific property details"""
+    if not is_db_available():
+        raise HTTPException(status_code=503, detail="Database not available")
+    
     try:
         prop = await db.properties.find_one({"zpid": zpid}, {"_id": 0})
         if not prop:
