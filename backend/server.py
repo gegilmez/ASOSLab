@@ -1084,6 +1084,9 @@ async def get_property_details(zpid: str):
 @api_router.patch("/properties/{zpid}")
 async def update_property_details(zpid: str, updates: dict):
     """Update property financial details and recalculate metrics"""
+    if not is_db_available():
+        raise HTTPException(status_code=503, detail="Database not available")
+    
     try:
         prop = await db.properties.find_one({"zpid": zpid}, {"_id": 0})
         if not prop:
