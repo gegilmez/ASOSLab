@@ -840,9 +840,32 @@ function App() {
                       </label>
                     </div>
                     
+                    <div className="flex items-center justify-between bg-red-50 p-4 rounded-lg hover:bg-red-100 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <div className="bg-red-600 p-2 rounded">
+                          <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="font-medium text-slate-900">Exclude RECA Contamination Zone</p>
+                          <p className="text-sm text-slate-600">Filter out properties in radioactive contamination areas</p>
+                        </div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={excludeRecaZone}
+                          onChange={(e) => setExcludeRecaZone(e.target.checked)}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+                      </label>
+                    </div>
+                    
                     <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                       <p className="text-sm text-green-800">
-                        <strong>✓ Active Filters:</strong> {[requiresGarage && "Garage Required", excludeDamagedNearby && "No Damaged Nearby", excludeVacantNearby && "No Vacant Nearby", excludeMold && "No Mold", excludeFoundationIssues && "No Foundation Issues", excludeFloodZone && "No Flood Zone"].filter(Boolean).join(", ") || "No filters active"}
+                        <strong>✓ Active Filters:</strong> {[requiresGarage && "Garage Required", excludeDamagedNearby && "No Damaged Nearby", excludeVacantNearby && "No Vacant Nearby", excludeMold && "No Mold", excludeFoundationIssues && "No Foundation Issues", excludeFloodZone && "No Flood Zone", excludeRecaZone && "No RECA Zone"].filter(Boolean).join(", ") || "No filters active"}
                       </p>
                     </div>
                   </div>
