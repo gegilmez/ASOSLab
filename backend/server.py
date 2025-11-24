@@ -1447,7 +1447,9 @@ async def startup_event():
 @app.on_event("shutdown")
 async def shutdown_event():
     scheduler.shutdown()
-    client.close()
+    if client:
+        client.close()
+        logger.info("MongoDB connection closed")
 
 app.include_router(api_router)
 
