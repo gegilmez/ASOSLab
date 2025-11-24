@@ -419,6 +419,24 @@ async def calculate_property_analysis(prop: dict, purchase_price: float) -> Prop
     
     return analysis
 
+def determine_property_type(home_type: str) -> PropertyType:
+    """Determine property type from Zillow homeType field"""
+    home_type_upper = str(home_type).upper()
+    
+    # Check for multi-family indicators
+    multi_family_keywords = ['MULTI', 'APARTMENT', 'DUPLEX', 'TRIPLEX', 'FOURPLEX', 'QUADRUPLEX']
+    if any(keyword in home_type_upper for keyword in multi_family_keywords):
+        return PropertyType.MULTI_FAMILY
+    
+    # Check for single-family indicators
+    single_family_keywords = ['SINGLE', 'HOUSE', 'TOWNHOUSE', 'CONDO', 'VILLA']
+    if any(keyword in home_type_upper for keyword in single_family_keywords):
+        return PropertyType.SINGLE_FAMILY
+    
+    # Default to single-family for unknown types
+    logger.info(f"Unknown homeType '{home_type}', defaulting to SINGLE_FAMILY")
+    return PropertyType.SINGLE_FAMILY
+
 async def search_zillow_properties(filters: SearchFilters) -> List[dict]:
     """Search properties using RapidAPI Zillow endpoint"""
     
