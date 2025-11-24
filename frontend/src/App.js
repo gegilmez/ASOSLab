@@ -884,45 +884,57 @@ function App() {
             
             {/* Properties Tab */}
             <TabsContent value="properties" className="space-y-4" data-testid="properties-content">
-              {properties.length > 0 && (
-                <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm border border-slate-200">
-                  <div className="flex items-center gap-4">
-                    <Button
-                      variant="outline"
-                      onClick={selectAllProperties}
-                      data-testid="select-all-button"
-                    >
-                      {selectedProperties.length === properties.length ? "Deselect All" : "Select All"}
-                    </Button>
-                    <span className="text-sm text-slate-600">
-                      {selectedProperties.length} of {properties.length} selected
-                    </span>
-                  </div>
-                  {selectedProperties.length > 0 && (
-                    <div className="flex gap-3">
-                      <Button
-                        onClick={exportToSheets}
-                        className="bg-green-600 hover:bg-green-700 text-white"
-                        data-testid="export-sheets-button"
-                      >
-                        <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-                        </svg>
-                        Export to Sheets
-                      </Button>
-                      <Button
-                        onClick={emailSelectedProperties}
-                        className="bg-purple-600 hover:bg-purple-700 text-white"
-                        data-testid="email-selected-button"
-                      >
-                        <Mail className="w-4 h-4 mr-2" />
-                        Email Selected
-                      </Button>
+              {loading ? (
+                <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
+                  <CardContent className="py-12 text-center">
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600"></div>
+                      <h3 className="text-lg font-semibold text-slate-900">Searching Properties...</h3>
+                      <p className="text-slate-600">This may take a few moments</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : (
+                <>
+                  {properties.length > 0 && (
+                    <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm border border-slate-200">
+                      <div className="flex items-center gap-4">
+                        <Button
+                          variant="outline"
+                          onClick={selectAllProperties}
+                          data-testid="select-all-button"
+                        >
+                          {selectedProperties.length === properties.length ? "Deselect All" : "Select All"}
+                        </Button>
+                        <span className="text-sm text-slate-600">
+                          {selectedProperties.length} of {properties.length} selected
+                        </span>
+                      </div>
+                      {selectedProperties.length > 0 && (
+                        <div className="flex gap-3">
+                          <Button
+                            onClick={exportToSheets}
+                            className="bg-green-600 hover:bg-green-700 text-white"
+                            data-testid="export-sheets-button"
+                          >
+                            <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                            </svg>
+                            Export to Sheets
+                          </Button>
+                          <Button
+                            onClick={emailSelectedProperties}
+                            className="bg-purple-600 hover:bg-purple-700 text-white"
+                            data-testid="email-selected-button"
+                          >
+                            <Mail className="w-4 h-4 mr-2" />
+                            Email Selected
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   )}
-                </div>
-              )}
-              {properties.length === 0 ? (
+                  {properties.length === 0 ? (
                 <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
                   <CardContent className="py-12 text-center">
                     <Home className="h-16 w-16 mx-auto text-slate-300 mb-4" />
