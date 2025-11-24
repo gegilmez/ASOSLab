@@ -1153,6 +1153,10 @@ async def save_email_preferences(prefs: EmailPreferences):
 @api_router.get("/email-preferences/{email}")
 async def get_email_preferences(email: str):
     """Get email preferences"""
+    if not is_db_available():
+        # Return default preferences when DB is unavailable
+        return EmailPreferences(email=email)
+    
     try:
         prefs = await db.email_prefs.find_one({"email": email}, {"_id": 0})
         if not prefs:
