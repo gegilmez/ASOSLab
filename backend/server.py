@@ -1025,12 +1025,17 @@ async def search_properties(filters: SearchFilters):
                 listing = PropertyListing(**property_data)
                 analyzed_properties.append(listing)
                 
-                # Save to database
-                await db.properties.update_one(
-                    {"zpid": listing.zpid},
-                    {"$set": listing.model_dump()},
-                    upsert=True
-                )
+                # Save to database (if available)
+                if is_db_available():
+                    try:
+                        await db.properties.update_one(
+                            {"zpid": listing.zpid},
+                            {"$set": listing.model_dump()},
+                            upsert=True
+                        )
+                    except Exception as db_error:
+                        logger.warning(f"Failed to save property to database: {str(db_error)}")
+                        # Continue without database - property is already in analyzed_properties list
                 
             except Exception as e:
                 logger.error(f"Error processing property: {str(e)}")
