@@ -143,11 +143,11 @@ function App() {
     "St. Charles"
   ]);
   const [minPrice, setMinPrice] = useState(100000);
-  const [maxPrice, setMaxPrice] = useState(175000);
+  const [maxPrice, setMaxPrice] = useState(400000);
   const [minBedrooms, setMinBedrooms] = useState(2);
   const [maxBedrooms, setMaxBedrooms] = useState(3);
   const [propertyType, setPropertyType] = useState("single_family");
-  const [minCapRate, setMinCapRate] = useState(7);
+  const [minCapRate, setMinCapRate] = useState(6.5);
   const [requiresGarage, setRequiresGarage] = useState(true);
   const [excludeDamagedNearby, setExcludeDamagedNearby] = useState(true);
   const [excludeVacantNearby, setExcludeVacantNearby] = useState(true);
