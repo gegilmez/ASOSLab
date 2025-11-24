@@ -805,7 +805,7 @@ async def health_check():
     }
     
     # Check MongoDB
-    if client and db:
+    if client is not None and db is not None:
         try:
             await client.admin.command('ping')
             health_status["services"]["mongodb"] = "connected"
