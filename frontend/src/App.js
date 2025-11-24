@@ -216,6 +216,7 @@ function App() {
         exclude_mold: excludeMold,
         exclude_foundation_issues: excludeFoundationIssues,
         exclude_flood_zone: excludeFloodZone,
+        exclude_reca_zone: excludeRecaZone,
         min_days_on_market: minDaysOnMarket,
         limit: resultLimit
       });
