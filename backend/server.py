@@ -1136,6 +1136,9 @@ async def update_property_details(zpid: str, updates: dict):
 @api_router.post("/email-preferences")
 async def save_email_preferences(prefs: EmailPreferences):
     """Save email notification preferences"""
+    if not is_db_available():
+        raise HTTPException(status_code=503, detail="Database not available")
+    
     try:
         await db.email_prefs.update_one(
             {"email": prefs.email},
