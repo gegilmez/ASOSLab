@@ -96,6 +96,7 @@ class PropertyListing(BaseModel):
     in_reca_zone: Optional[bool] = False
     reca_zip_codes: List[str] = ["63031", "63033", "63034", "63042", "63043", "63044", "63045", "63074", "63114", "63121", "63134", "63135", "63138", "63140", "63145"]
     proximity_to_coldwater_creek: Optional[str] = None  # "immediate", "near", "moderate", "far"
+    proximity_to_latty_avenue: Optional[str] = None  # "immediate", "near", "moderate", "far"
     proximity_to_westlake_landfill: Optional[str] = None  # "immediate", "near", "moderate", "far"
     contamination_notes: Optional[str] = None
     
