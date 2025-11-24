@@ -193,29 +193,60 @@ def assess_contamination_risk(prop: dict) -> dict:
     # Check if in RECA zone
     prop['in_reca_zone'] = zip_code in reca_zips or any(area.lower() in city for area in reca_areas)
     
-    # Estimate proximity based on city/zip
-    # Immediate proximity cities (right next to contamination sites)
-    immediate_cities = ["bridgeton", "hazelwood", "berkeley", "ferguson"]
-    near_cities = ["florissant", "maryland heights", "overland", "st. ann", "saint ann"]
+    # Estimate proximity based on city/zip for THREE contamination sites:
+    # 1. Coldwater Creek
+    # 2. Latty Avenue
+    # 3. West Lake Landfill
     
-    if any(city_name in city for city_name in immediate_cities):
+    # Coldwater Creek proximity (flows through multiple areas)
+    coldwater_immediate = ["ferguson", "berkeley", "black jack", "cool valley"]
+    coldwater_near = ["florissant", "hazelwood", "bridgeton", "jennings", "dellwood"]
+    
+    # Latty Avenue proximity (Hazelwood/Florissant area)
+    latty_immediate = ["hazelwood"]
+    latty_near = ["florissant", "bridgeton"]
+    
+    # West Lake Landfill proximity (Bridgeton area)
+    westlake_immediate = ["bridgeton"]
+    westlake_near = ["hazelwood", "maryland heights", "berkeley"]
+    
+    # Set proximity to Coldwater Creek
+    if any(city_name in city for city_name in coldwater_immediate):
         prop['proximity_to_coldwater_creek'] = "immediate"
-        prop['proximity_to_westlake_landfill'] = "immediate" if "bridgeton" in city or "hazelwood" in city else "near"
-    elif any(city_name in city for city_name in near_cities):
+    elif any(city_name in city for city_name in coldwater_near):
         prop['proximity_to_coldwater_creek'] = "near"
-        prop['proximity_to_westlake_landfill'] = "moderate"
     elif prop['in_reca_zone']:
         prop['proximity_to_coldwater_creek'] = "moderate"
-        prop['proximity_to_westlake_landfill'] = "moderate"
     else:
         prop['proximity_to_coldwater_creek'] = "far"
+    
+    # Set proximity to Latty Avenue
+    if any(city_name in city for city_name in latty_immediate):
+        prop['proximity_to_latty_avenue'] = "immediate"
+    elif any(city_name in city for city_name in latty_near):
+        prop['proximity_to_latty_avenue'] = "near"
+    elif prop['in_reca_zone']:
+        prop['proximity_to_latty_avenue'] = "moderate"
+    else:
+        prop['proximity_to_latty_avenue'] = "far"
+    
+    # Set proximity to West Lake Landfill
+    if any(city_name in city for city_name in westlake_immediate):
+        prop['proximity_to_westlake_landfill'] = "immediate"
+    elif any(city_name in city for city_name in westlake_near):
+        prop['proximity_to_westlake_landfill'] = "near"
+    elif prop['in_reca_zone']:
+        prop['proximity_to_westlake_landfill'] = "moderate"
+    else:
         prop['proximity_to_westlake_landfill'] = "far"
     
-    # Add contamination notes
+    # Add contamination notes with all three sites
     if prop['in_reca_zone']:
         sites = []
         if prop['proximity_to_coldwater_creek'] in ["immediate", "near"]:
-            sites.append("Cold Water Creek")
+            sites.append("Coldwater Creek")
+        if prop['proximity_to_latty_avenue'] in ["immediate", "near"]:
+            sites.append("Latty Avenue")
         if prop['proximity_to_westlake_landfill'] in ["immediate", "near"]:
             sites.append("West Lake Landfill")
         
