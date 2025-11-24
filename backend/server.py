@@ -882,6 +882,11 @@ async def search_properties(filters: SearchFilters):
                 # Assess contamination risk
                 property_data = assess_contamination_risk(property_data)
                 
+                # Apply RECA zone filter (after assessment so we know if it's in RECA zone)
+                if filters.exclude_reca_zone and property_data.get('in_reca_zone', False):
+                    logger.info(f"Filtering out property {property_data['zpid']} - in RECA contamination zone")
+                    continue
+                
                 # Estimate missing values
                 property_data = await estimate_property_values(property_data)
                 
