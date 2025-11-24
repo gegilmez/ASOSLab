@@ -280,16 +280,22 @@ function App() {
   const handlePropertyTypeChange = (type) => {
     setPropertyType(type);
     
-    // Auto-adjust price ranges based on property type
+    // Auto-adjust price ranges, cap rate, and max bedrooms based on property type
     if (type === "single_family") {
       setMinPrice(100000);
-      setMaxPrice(175000);
+      setMaxPrice(400000);
+      setMinCapRate(6.5);
+      setMaxBedrooms(3);
     } else if (type === "multi_family") {
       setMinPrice(150000);
-      setMaxPrice(300000);
+      setMaxPrice(400000);
+      setMinCapRate(5.5);
+      setMaxBedrooms(6);
     } else if (type === "both") {
       setMinPrice(100000);
-      setMaxPrice(300000);
+      setMaxPrice(400000);
+      setMinCapRate(5.5);
+      setMaxBedrooms(6);
     }
   };
   
