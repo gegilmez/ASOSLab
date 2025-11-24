@@ -283,7 +283,7 @@ function App() {
     // Auto-adjust price ranges, cap rate, and max bedrooms based on property type
     if (type === "single_family") {
       setMinPrice(100000);
-      setMaxPrice(175000);
+      setMaxPrice(200000);
       setMinCapRate(6.5);
       setMaxBedrooms(3);
     } else if (type === "multi_family") {
