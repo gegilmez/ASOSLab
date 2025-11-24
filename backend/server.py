@@ -855,7 +855,7 @@ async def search_properties(filters: SearchFilters):
                     'bedrooms': prop.get('bedrooms'),
                     'bathrooms': prop.get('bathrooms'),
                     'sqft': prop.get('livingArea'),
-                    'property_type': determine_property_type(prop.get('homeType', ''), home_type_param),
+                    'property_type': determine_property_type(prop.get('homeType', ''), filters.property_types),
                     'property_condition': PropertyCondition.NEEDS_TLC,
                     'url': zillow_url,
                     'has_garage': prop.get('has_garage', True),
