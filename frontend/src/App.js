@@ -1283,6 +1283,8 @@ function App() {
                   ))}
                 </div>
               )}
+                </>
+              )}
             </TabsContent>
             
             {/* Email Setup Tab */}
