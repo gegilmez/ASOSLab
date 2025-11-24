@@ -1421,6 +1421,18 @@ scheduler = AsyncIOScheduler()
 
 @app.on_event("startup")
 async def startup_event():
+    # Test MongoDB connection
+    global client, db
+    if client and db:
+        try:
+            await client.admin.command('ping')
+            logger.info("✓ MongoDB connection successful")
+        except Exception as e:
+            logger.error(f"✗ MongoDB connection failed: {str(e)}")
+            logger.warning("Application will continue but database operations may fail")
+    else:
+        logger.warning("MongoDB client not initialized - running without database")
+    
     # Schedule weekly email every Monday at 9 AM
     scheduler.add_job(
         send_weekly_email,
