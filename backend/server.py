@@ -1053,6 +1053,10 @@ async def search_properties(filters: SearchFilters):
 @api_router.get("/properties", response_model=List[PropertyListing])
 async def get_saved_properties(limit: int = Query(50, le=200)):
     """Get saved properties from database"""
+    if not is_db_available():
+        logger.warning("Database not available - returning empty list")
+        return []
+    
     try:
         properties = await db.properties.find({}, {"_id": 0}).sort("cap_rate", -1).to_list(limit)
         return [PropertyListing(**prop) for prop in properties]
