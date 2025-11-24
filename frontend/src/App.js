@@ -1112,6 +1112,18 @@ function App() {
                                       </span>
                                     </div>
                                   )}
+                                  {property.proximity_to_latty_avenue && (
+                                    <div className="flex items-center gap-1 text-xs">
+                                      <span className={`px-2 py-0.5 rounded font-medium ${
+                                        property.proximity_to_latty_avenue === "immediate" ? "bg-red-600 text-white" : 
+                                        property.proximity_to_latty_avenue === "near" ? "bg-orange-500 text-white" :
+                                        property.proximity_to_latty_avenue === "moderate" ? "bg-yellow-400 text-slate-900" :
+                                        "bg-green-200 text-green-900"
+                                      }`}>
+                                        Latty Avenue: {property.proximity_to_latty_avenue.toUpperCase()}
+                                      </span>
+                                    </div>
+                                  )}
                                   {property.proximity_to_westlake_landfill && (
                                     <div className="flex items-center gap-1 text-xs">
                                       <span className={`px-2 py-0.5 rounded font-medium ${
