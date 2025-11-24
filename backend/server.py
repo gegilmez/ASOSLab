@@ -162,6 +162,7 @@ class SearchFilters(BaseModel):
     exclude_mold: bool = True
     exclude_foundation_issues: bool = True
     exclude_flood_zone: bool = True
+    exclude_reca_zone: bool = False  # Default OFF - show RECA properties by default
     min_days_on_market: int = 0
     limit: int = Field(default=50, le=100)
 
