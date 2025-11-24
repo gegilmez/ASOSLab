@@ -49,6 +49,11 @@ api_router = APIRouter(prefix="/api")
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Database helper function
+def is_db_available():
+    """Check if MongoDB is available"""
+    return client is not None and db is not None
+
 # Enums
 class PropertyType(str, Enum):
     SINGLE_FAMILY = "single_family"
