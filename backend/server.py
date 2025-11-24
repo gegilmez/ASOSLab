@@ -23,10 +23,24 @@ from oauth2client.service_account import ServiceAccountCredentials
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+# MongoDB connection with robust error handling
+mongo_url = os.getenv('MONGO_URL', 'mongodb://localhost:27017')
+db_name = os.getenv('DB_NAME', 'real_estate_db')
+
+# Initialize MongoDB client
+try:
+    client = AsyncIOMotorClient(
+        mongo_url,
+        serverSelectionTimeoutMS=5000,
+        connectTimeoutMS=10000,
+        retryWrites=True
+    )
+    db = client[db_name]
+    logger.info(f"MongoDB connection initialized to database: {db_name}")
+except Exception as e:
+    logger.error(f"Failed to initialize MongoDB client: {str(e)}")
+    client = None
+    db = None
 
 app = FastAPI(title="Real Estate Property Analyzer")
 api_router = APIRouter(prefix="/api")
