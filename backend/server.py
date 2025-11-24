@@ -791,6 +791,38 @@ def get_mock_properties(filters: SearchFilters) -> List[dict]:
 async def root():
     return {"message": "Real Estate Property Analyzer API", "version": "1.0.0"}
 
+@api_router.get("/health")
+async def health_check():
+    """Health check endpoint for monitoring"""
+    health_status = {
+        "status": "healthy",
+        "services": {}
+    }
+    
+    # Check MongoDB
+    if client and db:
+        try:
+            await client.admin.command('ping')
+            health_status["services"]["mongodb"] = "connected"
+        except Exception as e:
+            health_status["services"]["mongodb"] = f"error: {str(e)}"
+            health_status["status"] = "degraded"
+    else:
+        health_status["services"]["mongodb"] = "not_configured"
+        health_status["status"] = "degraded"
+    
+    # Check environment variables
+    required_env_vars = ["RAPIDAPI_KEY", "GMAIL_ADDRESS", "GOOGLE_SHEET_ID"]
+    missing_vars = [var for var in required_env_vars if not os.getenv(var)]
+    
+    if missing_vars:
+        health_status["services"]["config"] = f"missing: {', '.join(missing_vars)}"
+        health_status["status"] = "degraded"
+    else:
+        health_status["services"]["config"] = "ok"
+    
+    return health_status
+
 @api_router.get("/cities")
 async def get_cities(force_refresh: bool = False):
     """Get active cities from spreadsheet (cached for 1 week)"""
