@@ -158,6 +158,7 @@ function App() {
   const [excludeMold, setExcludeMold] = useState(true);
   const [excludeFoundationIssues, setExcludeFoundationIssues] = useState(true);
   const [excludeFloodZone, setExcludeFloodZone] = useState(true);
+  const [excludeRecaZone, setExcludeRecaZone] = useState(false);  // Default OFF - show RECA properties
   
   // For inline editing
   const [editingProperty, setEditingProperty] = useState(null);
