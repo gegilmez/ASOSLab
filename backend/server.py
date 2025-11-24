@@ -452,7 +452,7 @@ async def calculate_property_analysis(prop: dict, purchase_price: float) -> Prop
     
     return analysis
 
-def determine_property_type(home_type: str) -> PropertyType:
+def determine_property_type(home_type: str, search_filter_type: str = None) -> PropertyType:
     """Determine property type from Zillow homeType field"""
     home_type_upper = str(home_type).upper()
     
@@ -465,6 +465,16 @@ def determine_property_type(home_type: str) -> PropertyType:
     single_family_keywords = ['SINGLE', 'HOUSE', 'TOWNHOUSE', 'CONDO', 'VILLA']
     if any(keyword in home_type_upper for keyword in single_family_keywords):
         return PropertyType.SINGLE_FAMILY
+    
+    # If homeType is empty/unknown, trust the API search filter
+    # This happens when Zillow doesn't provide homeType in response
+    if not home_type or home_type.strip() == '':
+        if search_filter_type and 'multi-family' in search_filter_type.lower():
+            logger.info(f"Empty homeType, but search was for multi-family - trusting search filter")
+            return PropertyType.MULTI_FAMILY
+        elif search_filter_type and 'houses' in search_filter_type.lower():
+            logger.info(f"Empty homeType, but search was for houses - trusting search filter")
+            return PropertyType.SINGLE_FAMILY
     
     # Default to single-family for unknown types
     logger.info(f"Unknown homeType '{home_type}', defaulting to SINGLE_FAMILY")
